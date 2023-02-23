@@ -12,6 +12,18 @@ app.get('/', (req, res) => {// define a route handler for the default home page
     res.send('Hello World!')// send some response
 })
 
+app.get('/sign-in', (req, res, next) => {// define a route handler for the default home page
+    const {email, password} = req.body;
+    if (!email || !password) 
+    return res.status(400).json({error: 'Please provide email and password'})
+    next();
+},
+(req, res) => {
+    res.send('Sign In Page')// send some response
+});
+
+
 app.listen(PORT,  () => {// start express server on port 3000
     console.log(`🚀 Server running on port http://localhost:${PORT},🚀`)
+    
 })

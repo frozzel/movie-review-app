@@ -1,0 +1,25 @@
+{
+  "name": "woke-advisory-server",
+  "version": "1.0.0",
+  "description": "movie review application",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "@frozzel"
+  },
+  "keywords": [
+    "movie",
+    "review",
+    "woke",
+    "alert"
+  ],
+  "author": "Dennis Hickox",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

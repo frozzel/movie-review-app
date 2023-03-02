@@ -1,12 +1,14 @@
 const nodemailer = require('nodemailer');// import nodemailer
-const {EMAILUSER, EMAILPASS} = '../config/env.js'
+const { EMAILUSER, EMAILPASS } = require('../config/env.js');// import config
 
-  exports.genOPT = (otp_len= 6 ) => {
+exports.genOPT = (otp_len= 6 ) => {
 
   let OTP = ""
   for (let i = 1; i <= otp_len; i++) {
-      OTP += Math.round(Math.random() * 9)
+      randnum = Math.round(Math.random() * 9)
+      OTP += randnum
   }
+  return OTP
 }
 
 exports.genTransporter = () => 
@@ -18,3 +20,4 @@ exports.genTransporter = () =>
           pass: EMAILPASS
         }
       });
+

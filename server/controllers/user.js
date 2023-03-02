@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
     
     //create a token thats random
     let OTP = genOPT()
-    
+
     // store token in database
     const newEmailVerificationToken = new EmailVerificationToken({ owner: newUser._id, token: OTP })
 
@@ -24,8 +24,6 @@ exports.create = async (req, res) => {
   
     // send email
     var transport = genTransporter();
-
-
       transport.sendMail({
         from: 'verification@WokeAdvisory.com',
         to: newUser.email,
@@ -64,8 +62,6 @@ exports.verifyEmail = async (req, res) => {
     await EmailVerificationToken.findByIdAndDelete(token._id);
 
     var transport = genTransporter();
-
-
       transport.sendMail({
         from: 'verification@WokeAdvisory.com',
         to: user.email,
@@ -99,8 +95,6 @@ exports.resendEmailVerificationToken = async (req, res) => {
   
     // send email
     var transport = genTransporter();
-
-
       transport.sendMail({
         from: 'verification@WokeAdvisory.com',
         to: user.email,

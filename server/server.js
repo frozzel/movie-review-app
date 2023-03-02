@@ -26,5 +26,6 @@ app.post('/sign-in', (req, res, next) => {// define a route handler for the defa
 
 app.listen(PORT,  () => {// start express server on port 3000
     console.log(`🚀 Server running on port http://localhost:${PORT},🚀`)
+    console.log(`...............Starting Database...............`)
     
 })

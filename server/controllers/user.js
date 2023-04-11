@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer')
+// const nodemailer = require('nodemailer')
 const User = require('../models/user')
 const EmailVerificationToken = require('../models/email_verification');
 const { isValidObjectId } = require('mongoose');
@@ -112,7 +112,7 @@ exports.resendEmailVerificationToken = async (req, res) => {
   })
 
   res.json({
-    message: "New OTP has been sent to your registered email accout.",
+    message: "New OTP has been sent to your registered email account.",
   });
 };
 

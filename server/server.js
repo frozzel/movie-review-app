@@ -20,12 +20,18 @@ app.post('/sign-in', (req, res, next) => {// define a route handler for the defa
     next();
 },
 (req, res) => {
-    res.send('Succsess! Sign In Page')// send some response
+    res.send('Success! Sign In Page')// send some response
 });
 
 
 app.listen(PORT,  () => {// start express server on port 3000
+    console.log(`..............................................`)
     console.log(`🚀 Server running on port http://localhost:${PORT},🚀`)
+    console.log(`..............................................`)
     console.log(`...............Starting Database...............`)
+    console.log(`....`)
+    console.log(`............`)
+    console.log(`........................`)
+    console.log(`..............................................`)
     
 })

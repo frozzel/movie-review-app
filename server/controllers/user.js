@@ -1,4 +1,4 @@
-// const nodemailer = require('nodemailer')
+const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const EmailVerificationToken = require('../models/email_verification');
 const { isValidObjectId } = require('mongoose');
@@ -191,4 +191,26 @@ exports.resetPassword = async (req, res) => {
   res.json({
     message: "Password reset successfully, now you can use new password.",
   });
+}
+
+exports.signIn = async (req, res) => {
+  const { email, password } = req.body
+  
+
+  const user = await User.findOne({ email })
+
+  if (!user) return sendError(res, "User not found!")
+
+  const matched =  await user.comparePassword(password)
+
+  if (!matched) return sendError(res, "Invalid Email/Password!")
+
+  const {name, _id} = user;
+
+  const jwtToken = jwt.sign({userId: _id}, process.env.JWT_SECRET, {expiresIn: '1d'})
+
+  res.json({user: {id: _id, name, email, token: jwtToken}})
+
+ 
+
 }

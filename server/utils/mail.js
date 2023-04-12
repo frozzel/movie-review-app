@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');// import nodemailer
-const { EMAILUSER, EMAILPASS } = require('../config/env.js');// import config
+
 
 exports.generateOPT = (otp_len= 6 ) => {
 
@@ -16,8 +16,8 @@ exports.generateMailTransporter = () =>
         host: "sandbox.smtp.mailtrap.io",
         port: 2525,
         auth: {
-          user: EMAILUSER,
-          pass: EMAILPASS
+          user: process.env.EMAILUSER,
+          pass: process.env.EMAILPASS
         }
       });
 

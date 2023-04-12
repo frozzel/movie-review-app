@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');// import mongoose
 mongoose.set('strictQuery', true)
 
-mongoose.connect('mongodb://localhost:27017/woke-advisory').// connect to mongodb
+mongoose.connect(process.env.MONGO_URI).// connect to mongodb
     then(()=>{
         console.log('🤑🤑🤑  Mongo db connection successful  🤑🤑🤑');// log success
     })

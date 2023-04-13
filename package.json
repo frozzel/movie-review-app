@@ -1,0 +1,26 @@
+{
+  "name": "woke-advisory",
+  "version": "1.0.0",
+  "description": "Movie Review App",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server --ignore client",
+    "develop": "concurrently \"cd server && npm run start\" \"cd client && npm start\"",
+    "install": "cd server && npm i  && cd ../client && npm i",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "frozzel"
+  },
+  "keywords": [
+    "woke"
+  ],
+  "author": "Dennis Hickox",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^8.0.1"
+  }
+}

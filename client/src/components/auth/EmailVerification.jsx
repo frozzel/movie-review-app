@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import Container from "../Container";
-import Title from "../user/form/Title";
-import Submit from "../user/form/Submit";
+import Title from "../form/Title";
+import Submit from "../form/Submit";
 import { useState } from 'react';
 
 const OTP_LENGTH = 6;

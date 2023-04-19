@@ -1,8 +1,8 @@
 import React from 'react'
 import Container from "../Container";
-import Title from "../user/form/Title";
-import FormInput from "../user/form/FormInput";
-import Submit from "../user/form/Submit";
+import Title from "../form/Title";
+import FormInput from "../form/FormInput";
+import Submit from "../form/Submit";
 import CustomLink from "../CustomLink";
 
 export default function ForgetPassword() {

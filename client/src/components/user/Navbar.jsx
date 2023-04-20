@@ -12,12 +12,12 @@ export default function Navbar() {
       <Container className="p-1">
         <div className="flex justify-between items-center">
           <Link to="/">
-          <h1 className="text-2xl font-semibold text-dark-subtle font-Anton"> WOKE <span className="bg-dark-subtle text-secondary"> ADVISORY </span></h1>
+          <h1 className="text-2xl font-semibold dark:text-white text-white font-Anton"> WOKE <span className="dark:bg-white bg-white dark:text-secondary text-primary"> ADVISORY </span></h1>
           {/* <img src="./logo.png" alt="" className="h-12" /> */}
           </Link>
           <ul className="flex items-center space-x-4">
             <li>
-              <button onClick={toggleTheme} className="bg-dark-subtle p-1 rounded">
+              <button onClick={toggleTheme} className="dark:bg-white bg-dark-subtle p-1 rounded">
                 <BsFillSunFill className="text-secondary" size={22} />
               </button>
             </li>

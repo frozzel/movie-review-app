@@ -4,12 +4,14 @@ import Title from "../form/Title";
 import FormInput from "../form/FormInput";
 import Submit from "../form/Submit";
 import CustomLink from "../CustomLink";
+import FormContainer from '../form/FormContainer';
+import { commonModalClasses } from '../../utils/theme';
 
 export default function ForgetPassword() {
   return (
-    <div className="fixed inset-0 bg-primary -z-10 flex justify-center items-center">
+    <FormContainer>
       <Container>
-        <form className="bg-secondary rounded p-6 w-96 space-y-6">
+        <form className={commonModalClasses + " w-96"}>
           <Title >Please Enter Your Email</Title>
           <FormInput label="Email" name="email"  placeholder="your@email.com" />
           <Submit value="Send Link"></Submit>
@@ -20,6 +22,6 @@ export default function ForgetPassword() {
           </div>
         </form>
       </Container>
-    </div>
+    </FormContainer>
   )
 }

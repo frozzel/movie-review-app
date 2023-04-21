@@ -6,6 +6,7 @@ import Container from "../Container";
 import FormContainer from "../form/FormContainer";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
+import { useNotification } from "../../hooks";
 
 const OTP_LENGTH = 6;
 let currentOTPIndex;
@@ -26,6 +27,7 @@ export default function EmailVerification() {
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
 
   const inputRef = useRef();
+  const {updateNotification} = useNotification()
 
   const { state } = useLocation();
   const user = state?.user;
@@ -72,9 +74,9 @@ export default function EmailVerification() {
       OTP: otp.join(""),
       userId: user.id,
     });
-    if (error) return console.log(error);
+    if (error) return updateNotification('error', error);
 
-    console.log(message);
+    updateNotification('success', message);
   };
 
   useEffect(() => {

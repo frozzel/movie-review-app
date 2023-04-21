@@ -38,7 +38,13 @@ exports.create = async (req, res) => {
     `
   })
 
-  res.status(201).json({ message: 'Please verify you email. OTP has been sent to your email account!' })
+  res.status(201).json({ user: {
+    id: newUser._id,
+    name: newUser.name,
+    email: newUser.email,
+    // isVerified: newUser.isVerified
+
+  } })
 };
 
 exports.verifyEmail = async (req, res) => {

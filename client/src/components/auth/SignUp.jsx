@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 import Container from "../Container";
 import Title from "../form/Title";
 import FormInput from "../form/FormInput";
@@ -6,6 +7,7 @@ import Submit from "../form/Submit";
 import CustomLink from "../CustomLink";
 import { commonModalClasses } from "../../utils/theme";
 import FormContainer from "../form/FormContainer";
+import { createUser } from "../../api/auth";
 
 
 const validateUserInfo = ({ name, email, password }) => {
@@ -32,22 +34,28 @@ export default function SignUp() {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = ({target}) => {
     const {name, value} = target;
     setUserInfo({...userInfo, [name]: value});
     
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const {ok, error}  = validateUserInfo(userInfo);
 
     if(!ok) return alert(error);
 
-    console.log(userInfo);
+    const response = await createUser(userInfo);
+    if(response.error) return alert(response.error);
+    navigate("/auth/verification", {
+      state: {user: response.user}, 
+      replace: true
+    });
 
-    
   }
   const { name, email, password } = userInfo;
 

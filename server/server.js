@@ -5,33 +5,23 @@ const {errorHandler} = require('./utils/error')// import error handler
 require('dotenv').config()// import dotenv
 require('./config/connections')//   import database connection
 const userRouter = require('./routes/user');// import user router
+const cors = require('cors'); // import cors (cross origin resource sharing) can also be done in the client side with proxy
+const { handleNotFound } = require('./utils/helper');
 
 
 const app = express();// create express app
+app.use(cors())
 app.use(express.json())// parse json request body
 app.use(morgan('dev'))// log http requests
 app.use('/api/user', userRouter);// use user router
 
-app.use(errorHandler)// use error handler
+app.use('/*', handleNotFound) // catch 404 and forward to error handler
 
-// app.use((err, req, res, next) => {
-//     console.log("err: ", err)
-//     res.status(500).json({error: err.message || 'Something went wrong'})
-// })
+
+app.use(errorHandler)// use error handler
 
 
 PORT = 4000// define a port
-
-
-// app.post('/sign-in', (req, res, next) => {// define a route handler for the default home page
-//     const {email, password} = req.body;
-//     if (!email || !password) 
-//     return res.status(400).json({error: 'Please provide email and password'})
-//     next();
-// },
-// (req, res) => {
-//     res.send('Success! Sign In Page')// send some response
-// });
 
 
 app.listen(PORT,  () => {// start express server on port 3000

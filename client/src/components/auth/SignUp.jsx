@@ -8,6 +8,7 @@ import CustomLink from "../CustomLink";
 import { commonModalClasses } from "../../utils/theme";
 import FormContainer from "../form/FormContainer";
 import { createUser } from "../../api/auth";
+import { useNotification } from "../../hooks";
 
 
 const validateUserInfo = ({ name, email, password }) => {
@@ -36,6 +37,8 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
+  const {updateNotification} = useNotification()
+
   const handleChange = ({target}) => {
     const {name, value} = target;
     setUserInfo({...userInfo, [name]: value});
@@ -47,7 +50,7 @@ export default function SignUp() {
 
     const {ok, error}  = validateUserInfo(userInfo);
 
-    if(!ok) return alert(error);
+    if(!ok) return updateNotification('error', error, );
 
     const response = await createUser(userInfo);
     if(response.error) return alert(response.error);

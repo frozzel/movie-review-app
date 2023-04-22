@@ -4,18 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import ThemeProvider from './context/ThemeProvider';
-import NotificationProvider from './context/NotificationProvider';
+import ContextProviders from './context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <NotificationProvider>
-      <ThemeProvider>
+      <ContextProviders>
         <App />
-      </ThemeProvider>
-    </NotificationProvider>
+      </ContextProviders>
     </BrowserRouter>
   </React.StrictMode>
 );

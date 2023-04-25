@@ -1,4 +1,6 @@
 const { check, validationResult } = require('express-validator');
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 exports.userValidator = [
     check("name").trim().not().isEmpty().withMessage("Name is missing!"),
@@ -40,3 +42,20 @@ exports.signInValidator = [
         .withMessage("Password is missing!")
        
 ];
+
+exports.isAuth = async(req, res, next) => {
+    const token =  req.headers?.authorization
+  
+    const jwtToken = token.split('Bearer ')[1]
+  
+    if (!jwtToken) return sendError(res, 'Invalid token!', 401)
+    const decode = jwt.verify(jwtToken, process.env.JWT_SECRET)
+    const {userId} = decode
+  
+    const user = await User.findById(userId)
+    if(!user) return sendError(res, 'No user found', 404);
+
+    req.user = user;
+    next();
+    
+    }

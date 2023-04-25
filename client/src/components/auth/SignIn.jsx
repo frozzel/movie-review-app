@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Container from "../Container";
 import Title from "../form/Title";
 import FormInput from "../form/FormInput";
@@ -7,6 +7,7 @@ import CustomLink from "../CustomLink";
 import { commonModalClasses } from "../../utils/theme";
 import FormContainer from "../form/FormContainer";
 import { useNotification, useAuth } from "../../hooks";
+import { useNavigate } from "react-router-dom";
 
 
 const validateUserInfo = ({ email, password }) => {
@@ -30,10 +31,12 @@ export default function SignIn() {
     email: "",
     password: "",
   });
-
+  const navigate = useNavigate()
   const {updateNotification} = useNotification()
   const {handleLogin, authInfo} = useAuth();
-  console.log(authInfo);
+  const {isPending, isLoggedIn} = authInfo;
+
+  
 
   const handleChange = ({target}) => {
     const {name, value} = target;
@@ -49,6 +52,12 @@ export default function SignIn() {
     handleLogin(userInfo.email, userInfo.password);
   }
  
+  useEffect(() => {
+    if(isLoggedIn) navigate('/');
+  }, [isLoggedIn, navigate])
+
+
+
   return (
     <FormContainer>
       <Container>
@@ -56,7 +65,7 @@ export default function SignIn() {
           <Title >Sign In</Title>
           <FormInput  value={userInfo.email} onChange={handleChange} label="Email" name="email"  placeholder="your@email.com" />
           <FormInput value={userInfo.password} onChange={handleChange}  label="Password" name="password" type="password"  placeholder="********" />
-          <Submit value="Sign In"></Submit>
+          <Submit value="Sign In" busy={isPending}></Submit>
           <div className="flex justify-between">
             <CustomLink to="/auth/forget-password">Forget Password</CustomLink>
             <CustomLink to="/auth/SignUp">Sign Up</CustomLink>

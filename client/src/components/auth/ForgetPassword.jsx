@@ -1,27 +1,55 @@
-import React from 'react'
+import React, { useState } from "react";
+import { forgetPassword } from "../../api/auth";
+import { useNotification } from "../../hooks";
+import { isValidEmail } from "../../utils/helper";
+import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
-import Title from "../form/Title";
+import CustomLink from "../CustomLink";
+import FormContainer from "../form/FormContainer";
 import FormInput from "../form/FormInput";
 import Submit from "../form/Submit";
-import CustomLink from "../CustomLink";
-import FormContainer from '../form/FormContainer';
-import { commonModalClasses } from '../../utils/theme';
+import Title from "../form/Title";
 
 export default function ForgetPassword() {
+  const [email, setEmail] = useState("");
+  const { updateNotification } = useNotification();
+
+  const handleChange = ({ target }) => {
+    const { value } = target;
+    setEmail(value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isValidEmail(email))
+      return updateNotification("error", "Invalid email!");
+
+    const { error, message } = await forgetPassword(email);
+    if (error) return updateNotification("error", error);
+
+    updateNotification("error", message);
+  };
+
   return (
     <FormContainer>
       <Container>
-        <form className={commonModalClasses + " w-96"}>
-          <Title >Please Enter Your Email</Title>
-          <FormInput label="Email" name="email"  placeholder="your@email.com" />
-          <Submit value="Send Link"></Submit>
+        <form onSubmit={handleSubmit} className={commonModalClasses + " w-96"}>
+          <Title>Please Enter Your Email</Title>
+          <FormInput
+            onChange={handleChange}
+            value={email}
+            label="Email"
+            placeholder="john@email.com"
+            name="email"
+          />
+          <Submit value="Send Link" />
+
           <div className="flex justify-between">
-            <CustomLink to="/auth/SignIn">Sign In</CustomLink>
-            <CustomLink to="/auth/SignUp">Sign Up</CustomLink>
-            
+            <CustomLink to="/auth/signIn">Sign in</CustomLink>
+            <CustomLink to="/auth/signUp">Sign up</CustomLink>
           </div>
         </form>
       </Container>
     </FormContainer>
-  )
+  );
 }

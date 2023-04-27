@@ -5,6 +5,7 @@ const {errorHandler} = require('./utils/error')// import error handler
 require('dotenv').config()// import dotenv
 require('./config/connections')//   import database connection
 const userRouter = require('./routes/user');// import user router
+const actorRouter = require('./routes/actor');// import user router
 const cors = require('cors'); // import cors (cross origin resource sharing) can also be done in the client side with proxy
 const { handleNotFound } = require('./utils/helper');
 
@@ -14,6 +15,7 @@ app.use(cors())
 app.use(express.json())// parse json request body
 app.use(morgan('dev'))// log http requests
 app.use('/api/user', userRouter);// use user router
+app.use('/api/actor', actorRouter);// use user router
 
 app.use('/*', handleNotFound) // catch 404 and forward to error handler
 

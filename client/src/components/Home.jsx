@@ -1,8 +1,11 @@
 import React from 'react'
-import { commonModalClasses } from '../utils/theme'
+import NotVerified from './user/NotVerified';
+
+
 
 export default function Home() {
+ 
   return (
-    <div className={commonModalClasses} >Hello World</div>
+    <NotVerified></NotVerified>
   )
 }

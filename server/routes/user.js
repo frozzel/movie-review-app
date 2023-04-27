@@ -16,7 +16,7 @@ router.post("/sign-in", signInValidator, validate, signIn);
 
 router.get('/is-auth', isAuth, (req, res) => {
   const {user} = req;
-  res.json({user: {id: user._id, email: user.email, name: user.name}})
+  res.json({user: {id: user._id, email: user.email, name: user.name, isVerified: user.isVerified}})
 })
 
 module.exports = router;

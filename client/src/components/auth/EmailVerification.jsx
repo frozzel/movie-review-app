@@ -7,6 +7,7 @@ import FormContainer from "../form/FormContainer";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
 import { useAuth, useNotification } from "../../hooks";
+import { resendEmailVerificationToken } from "../../api/auth";
 
 const OTP_LENGTH = 6;
 let currentOTPIndex;
@@ -28,7 +29,8 @@ export default function EmailVerification() {
 
 
   const {isAuth, authInfo}=useAuth();
-  const {isLoggedIn} = authInfo;
+  const {isLoggedIn, profile} = authInfo;
+  const isVerified = profile?.isVerified;
   const inputRef = useRef();
   const {updateNotification} = useNotification()
 
@@ -57,6 +59,14 @@ export default function EmailVerification() {
     else focusNextInputField(currentOTPIndex);
     setOtp([...newOtp]);
   };
+
+  const handleOTPResend = async () => {
+    const {error, message} = await resendEmailVerificationToken(user.id);
+    if(error) return updateNotification('error', error);
+    updateNotification('success', message);
+  }
+
+
 
   const handleKeyDown = ({ key }, index) => {
     currentOTPIndex = index;
@@ -90,8 +100,8 @@ export default function EmailVerification() {
 
   useEffect(() => {
     if (!user) navigate("/not-found");
-    if (isLoggedIn) navigate("/");
-  }, [user, isLoggedIn, navigate]);
+    if (isLoggedIn && isVerified) navigate("/");
+  }, [user, isLoggedIn, isVerified, navigate]);
 
   // if(!user) return null
 
@@ -121,8 +131,13 @@ export default function EmailVerification() {
               );
             })}
           </div>
-
-          <Submit value="Verify Account" />
+            <div>
+                <Submit value="Verify Account" />
+                  <button onClick={handleOTPResend} type="button" className="dark:text-white text-blue-500 font-semibold hover:underline mt-2" >
+                    I don't have an code
+                  </button>
+            </div>
+          
         </form>
       </Container>
     </FormContainer>

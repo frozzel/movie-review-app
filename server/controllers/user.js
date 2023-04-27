@@ -78,7 +78,7 @@ exports.verifyEmail = async (req, res) => {
   })
 
   const jwtToken = jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: '1d'})
-  res.json({ user: {id: user._id, name: user.name, email: user.email, token: jwtToken}, message: "Your email is verified." })
+  res.json({ user: {id: user._id, name: user.name, email: user.email, token: jwtToken, isVerified: user.isVerified }, message: "Your email is verified." })
 }
 
 exports.resendEmailVerificationToken = async (req, res) => {
@@ -97,7 +97,7 @@ exports.resendEmailVerificationToken = async (req, res) => {
     return sendError(res, "Only after one hour you can request for another token!");
 
   // generate 6 digit otp
-  let OTP = generateOTP();
+  let OTP = generateOPT();
 
   // store otp inside our db
   const newEmailVerificationToken = new EmailVerificationToken({ owner: user._id, token: OTP })
@@ -212,11 +212,11 @@ exports.signIn = async (req, res) => {
 
   if (!matched) return sendError(res, "Invalid Email/Password!")
 
-  const {name, _id} = user;
+  const {name, _id, isVerified} = user;
 
   const jwtToken = jwt.sign({userId: _id}, process.env.JWT_SECRET, {expiresIn: '1d'})
 
-  res.json({user: {id: _id, name, email, token: jwtToken}})
+  res.json({user: {id: _id, name, email, token: jwtToken, isVerified}})
 
  
 

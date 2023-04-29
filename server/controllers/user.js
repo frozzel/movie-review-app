@@ -212,11 +212,11 @@ exports.signIn = async (req, res) => {
 
   if (!matched) return sendError(res, "Invalid Email/Password!")
 
-  const {name, _id, isVerified} = user;
+  const {name, _id, role, isVerified} = user;
 
   const jwtToken = jwt.sign({userId: _id}, process.env.JWT_SECRET, {expiresIn: '1d'})
 
-  res.json({user: {id: _id, name, email, token: jwtToken, isVerified}})
+  res.json({user: {id: _id, name, email, role, token: jwtToken, isVerified}})
 
  
 

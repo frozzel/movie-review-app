@@ -46,6 +46,7 @@ exports.signInValidator = [
 
 exports.isAuth = async(req, res, next) => {
     const token =  req.headers?.authorization
+    if (!token) return sendError(res, 'Invalid token!', 401)
   
     const jwtToken = token.split('Bearer ')[1]
   
@@ -60,16 +61,25 @@ exports.isAuth = async(req, res, next) => {
     next();
     
     }
-    exports.actorInfoValidator = [
-        check("name").trim().not().isEmpty().withMessage("Actor name is missing!"),
-        check("about")
-          .trim()
-          .not()
-          .isEmpty()
-          .withMessage("About is a required field!"),
-        check("gender")
-          .trim()
-          .not()
-          .isEmpty()
-          .withMessage("Gender is a required field!"),
-      ];
+exports.actorInfoValidator = [
+    check("name").trim().not().isEmpty().withMessage("Actor name is missing!"),
+    check("about")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("About is a required field!"),
+    check("gender")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("Gender is a required field!"),
+    ];
+
+exports.isAdmin = async (req, res, next) => {
+    const { user } = req;
+
+    if (user.role !== "admin") return sendError(res, "Unauthorized!", 401);
+
+
+    next();
+    }

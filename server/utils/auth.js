@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { sendError } = require("./helper");
 
+
 exports.userValidator = [
     check("name").trim().not().isEmpty().withMessage("Name is missing!"),
     check("email").normalizeEmail().isEmail().withMessage("Email is invalid!"),
@@ -83,3 +84,5 @@ exports.isAdmin = async (req, res, next) => {
 
     next();
     }
+
+

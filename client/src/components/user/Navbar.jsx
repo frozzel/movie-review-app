@@ -4,6 +4,8 @@ import Container from "../Container";
 import {Link} from "react-router-dom"
 import { useTheme } from "../../hooks";
 import { useAuth } from "../../hooks";
+import { FiLogOut } from "react-icons/fi";
+import { FiLogIn } from "react-icons/fi";
 
 
 export default function Navbar() {
@@ -36,16 +38,23 @@ export default function Navbar() {
             {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
-                  className="text-white font-semibold text-lg"
-                >
-                  Log out
+                  // className="text-white font-semibold text-lg pt-1"
+                  className="flex items-center text-dark-subtle text-lg hover:text-white transition space-x-1"
+                ><FiLogOut />
+                  <span>
+                    Logout
+                  </span>
                 </button>
               ) : (
                 <Link
-                  className="text-white font-semibold text-lg"
+                  // className="text-white font-semibold text-lg pt-1"
+                  className="flex items-center text-dark-subtle text-lg hover:text-white transition space-x-1"
                   to="/auth/signIn"
-                >
-                  Login
+                ><FiLogIn />
+                <span>
+                  Login     
+                </span>
+                  
                 </Link>
               )}
             </li>

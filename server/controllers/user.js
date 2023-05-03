@@ -78,7 +78,7 @@ exports.verifyEmail = async (req, res) => {
   })
 
   const jwtToken = jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: '1d'})
-  res.json({ user: {id: user._id, name: user.name, email: user.email, token: jwtToken, isVerified: user.isVerified }, message: "Your email is verified." })
+  res.json({ user: {id: user._id, name: user.name, email: user.email, token: jwtToken, isVerified: user.isVerified, role: user.role }, message: "Your email is verified." })
 }
 
 exports.resendEmailVerificationToken = async (req, res) => {
@@ -216,7 +216,7 @@ exports.signIn = async (req, res) => {
 
   const jwtToken = jwt.sign({userId: _id}, process.env.JWT_SECRET, {expiresIn: '1d'})
 
-  res.json({user: {id: _id, name, email, role, token: jwtToken, isVerified}})
+  res.json({user: {id: _id, name, email, role, token: jwtToken, isVerified, role}})
 
  
 

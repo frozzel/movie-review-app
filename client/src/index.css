@@ -6,24 +6,44 @@
     appearance: textfield;
   }
 
-.bounce-custom {
-  animation: bounce-custom 0.5s ;
-}
-@keyframes bounce-custom {
-  from,
-  to {
-    transform: scale(1, 1);
+  .bounce-custom {
+    animation: bounce-custom 0.5s;
   }
-  25% {
-    transform: scale(0.9, 1.1);
+  @keyframes bounce-custom {
+    from,
+    to {
+      transform: scale(1, 1);
+    }
+    25% {
+      transform: scale(0.9, 1.1);
+    }
+    50% {
+      transform: scale(1.1, 0.9);
+    }
+    75% {
+      transform: scale(0.95, 1.05);
+    }
   }
-  50% {
-    transform: scale(1.1, 0.9);
+  
+  .animate-scale {
+    transform-origin: 0% 0%;
+    animation: scale 0.2s;
   }
-  75% {
-    transform: scale(0.95, 1.05);
+  
+  .animate-scale-reverse {
+    transform-origin: 0% 0%;
+    animation: scale 0.2s reverse forwards;
   }
-}
+  
+  @keyframes scale {
+    0% {
+      transform: scaleY(0);
+    }
+    100% {
+      transform: scaleY(1);
+    }
+  }
+  
 
 @tailwind base;
 @tailwind components;

@@ -5,13 +5,15 @@ import Movies from '../components/admin/Movies';
 import Actors from '../components/admin/Actors';
 import NotFound from '../components/NotFound';
 import Navbar from '../components/admin/Navbar';
+import Header from '../components/admin/Header';
 
 
 export default function AdminNavigator() {
   return (
-    <div className='flex'>
+    <div className='flex dark:bg-primary bg-white'>
       <Navbar />
        <div className='flex-1 p-2 max-w-screen-xl '>
+        <Header />
     <Routes>
       <Route path='/' element={<Dashboard />} />
       <Route path='/movies' element={<Movies />} />

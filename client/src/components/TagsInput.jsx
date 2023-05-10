@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
-export default function TagsInput({ name, onChange }) {
+export default function TagsInput({ name, value, onChange }) {
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState([]);
 
@@ -53,12 +53,12 @@ export default function TagsInput({ name, onChange }) {
   };
 
   useEffect(() => {
+    if (value.length) setTags(value);
+  }, [value]);
+
+  useEffect(() => {
     input.current?.scrollIntoView();
   }, [tag]);
-
-  // useEffect(() => {
-  //   onChange(tags)
-  // }, [tags])
 
   return (
     <div>

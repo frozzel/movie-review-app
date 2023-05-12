@@ -288,6 +288,7 @@ export default function MovieForm() {
             name="poster"
             onChange={handleChange}
             selectedPoster={selectedPosterForUI}
+            label="Select poster"
             accept="image/jpg, image/jpeg, image/png"
           />
           <GenresSelector badge={genres.length} onClick={displayGenresModal} />

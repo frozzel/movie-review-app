@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { commonInputClasses } from "../../utils/theme";
 import LiveSearch from "../LiveSearch";
-import { renderItem, results } from "../admin/MovieForm";
-import { useNotification } from "../../hooks";
-
-// const cast = [{ actor: id, roleAs: "", leadActor: true }];
+import { useNotification, useSearch } from "../../hooks";
+import { renderItem } from "../../utils/helper";
+import { searchActor } from "../../api/actor";
 const defaultCastInfo = {
   profile: {},
   roleAs: "",
@@ -12,8 +11,10 @@ const defaultCastInfo = {
 };
 export default function CastForm({ onSubmit }) {
   const [castInfo, setCastInfo] = useState({ ...defaultCastInfo });
+  const [profiles, setProfiles] = useState([]);
 
   const { updateNotification } = useNotification();
+  const { handleSearch, resetSearch } = useSearch();
 
   const handleOnChange = ({ target }) => {
     const { checked, name, value } = target;
@@ -36,7 +37,16 @@ export default function CastForm({ onSubmit }) {
       return updateNotification("error", "Cast role is missing!");
 
     onSubmit(castInfo);
-    setCastInfo({ ...defaultCastInfo });
+    setCastInfo({ ...defaultCastInfo, profile: { name: "" } });
+    resetSearch();
+  };
+
+  const handleProfileChange = ({ target }) => {
+    const { value } = target;
+    const { profile } = castInfo;
+    profile.name = value;
+    setCastInfo({ ...castInfo, ...profile });
+    handleSearch(searchActor, value, setProfiles);
   };
 
   const { leadActor, profile, roleAs } = castInfo;
@@ -48,14 +58,15 @@ export default function CastForm({ onSubmit }) {
         className="w-4 h-4"
         checked={leadActor}
         onChange={handleOnChange}
-        title='Set as "Lead Actor"'
+        title="Set as lead actor"
       />
       <LiveSearch
         placeholder="Search profile"
         value={profile.name}
-        results={results}
+        results={profiles}
         onSelect={handleProfileSelect}
         renderItem={renderItem}
+        onChange={handleProfileChange}
       />
       <span className="dark:text-dark-subtle text-light-subtle font-semibold">
         as

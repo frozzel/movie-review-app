@@ -1,18 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import { getActors } from "../../api/actor";
+import { useNotification } from "../../hooks";
+
+let currentPageNo = 0;
+const limit = 2;
 
 export default function Actors() {
+  const [actors, setActors] = useState([]);
+  const [reachedToEnd, setReachedToEnd] = useState(false);
+  const { updateNotification } = useNotification();
+
+  const fetchActors = async (pageNo) => {
+    const { profiles, error } = await getActors(pageNo, limit);
+    if (error) return updateNotification("error", error);
+
+    if (!profiles.length) {
+      currentPageNo = pageNo - 1;
+      return setReachedToEnd(true);
+    }
+
+    setActors([...profiles]);
+  };
+
+  const handleOnNextClick = () => {
+    if (reachedToEnd) return;
+    currentPageNo += 1;
+    fetchActors(currentPageNo);
+  };
+
+  const handleOnPrevClick = () => {
+    if (currentPageNo <= 0) return;
+
+    currentPageNo -= 1;
+    fetchActors(currentPageNo);
+  };
+
+  useEffect(() => {
+    fetchActors(currentPageNo);
+  }, []);
+
   return (
-    <div className="grid grid-cols-4 gap-3 my-5">
-      <ActorProfile
-        profile={{
-          name: "John Doe",
-          about:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam dolorem quia blanditiis error! Facilis cumque optio vel temporibus voluptatibus vitae modi reiciendis laudantium perspiciatis consectetur sequi voluptas, error laborum architecto!",
-          avatar:
-            "https://images.unsplash.com/photo-1656217818549-c7078fe222b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
-        }}
-      />
+    <div className="p-5">
+      <div className="grid grid-cols-4 gap-5 p-5">
+        {actors.map((actor) => (
+          <ActorProfile profile={actor} key={actor.id} />
+        ))}
+      </div>
+
+      <div className="flex justify-end items-center space-x-3 mt-5">
+        <button
+          type="button"
+          className="text-primary dark:text-white hover:underline"
+          onClick={handleOnPrevClick}
+        >
+          Prev
+        </button>
+        <button
+          type="button"
+          className="text-primary dark:text-white hover:underline"
+          onClick={handleOnNextClick}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

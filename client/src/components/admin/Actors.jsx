@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import { getActors } from "../../api/actor";
 import { useNotification } from "../../hooks";
+import NextAndPrevButton from "../NextAndPrevButton";
 
 let currentPageNo = 0;
-const limit = 2;
+const limit = 20;
 
 export default function Actors() {
   const [actors, setActors] = useState([]);
@@ -31,6 +32,7 @@ export default function Actors() {
 
   const handleOnPrevClick = () => {
     if (currentPageNo <= 0) return;
+    if (reachedToEnd) setReachedToEnd(false);
 
     currentPageNo -= 1;
     fetchActors(currentPageNo);
@@ -48,28 +50,18 @@ export default function Actors() {
         ))}
       </div>
 
-      <div className="flex justify-end items-center space-x-3 mt-5">
-        <button
-          type="button"
-          className="text-primary dark:text-white hover:underline"
-          onClick={handleOnPrevClick}
-        >
-          Prev
-        </button>
-        <button
-          type="button"
-          className="text-primary dark:text-white hover:underline"
-          onClick={handleOnNextClick}
-        >
-          Next
-        </button>
-      </div>
+      <NextAndPrevButton
+        className="mt-5"
+        onNextClick={handleOnNextClick}
+        onPrevClick={handleOnPrevClick}
+      />
     </div>
   );
 }
 
 const ActorProfile = ({ profile }) => {
   const [showOptions, setShowOptions] = useState(false);
+  const acceptedNameLength = 15;
 
   const handleOnMouseEnter = () => {
     setShowOptions(true);
@@ -77,6 +69,12 @@ const ActorProfile = ({ profile }) => {
 
   const handleOnMouseLeave = () => {
     setShowOptions(false);
+  };
+
+  const getName = (name) => {
+    if (name.length <= acceptedNameLength) return name;
+
+    return name.substring(0, acceptedNameLength) + "..";
   };
 
   const { name, about = "", avatar } = profile;
@@ -97,10 +95,10 @@ const ActorProfile = ({ profile }) => {
         />
 
         <div className="px-2">
-          <h1 className="text-xl text-primary dark:text-white font-semibold">
-            {name}
+          <h1 className="text-xl text-primary dark:text-white font-semibold whitespace-nowrap">
+            {getName(name)}
           </h1>
-          <p className="text-primary dark:text-white">
+          <p className="text-primary dark:text-white opacity-70">
             {about.substring(0, 50)}
           </p>
         </div>

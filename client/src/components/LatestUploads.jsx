@@ -12,7 +12,7 @@ export default function LatestUploads() {
         movie={{
           poster:
             "https://images.unsplash.com/photo-1656119651670-ec9610795a3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
-          title: "Lorem ipsum dolor sit amet.",
+          title: "Lorem ipsum dolor sit a met.",
           status: "public",
           genres: ["Action", "Comedy"],
         }}

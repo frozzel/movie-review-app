@@ -6,6 +6,7 @@ const {
   removeMovie,
   getMovies,
   getMovieForUpdate,
+  searchMovies,
 } = require("../controllers/movie");
 const { isAuth, isAdmin, validate } = require("../utils/auth");
 const { uploadVideo, uploadImage } = require("../utils/multer");
@@ -56,5 +57,6 @@ router.patch(
 router.delete("/:movieId", isAuth, isAdmin, removeMovie);
 router.get("/movies", isAuth, isAdmin, getMovies);
 router.get("/for-update/:movieId", isAuth, isAdmin, getMovieForUpdate);
+router.get("/search", isAuth, isAdmin, searchMovies);
 
 module.exports = router;

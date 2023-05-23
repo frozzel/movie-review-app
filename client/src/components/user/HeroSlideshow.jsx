@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { getLatestUploads } from "../../api/movie";
 import { useNotification } from "../../hooks";
 
+
 let count = 0;
 let intervalId;
 export default function HeroSlideshow() {
@@ -175,7 +176,7 @@ const SlideShowController = ({ onNextClick, onPrevClick }) => {
 };
 
 const Slide = forwardRef((props, ref) => {
-  const { title, id, src, className = "", ...rest } = props;
+  const { title, id, src, reviews, className = "", ...rest } = props;
   return (
     <Link
       ref={ref}
@@ -190,6 +191,7 @@ const Slide = forwardRef((props, ref) => {
         <div className="absolute inset-0 flex flex-col justify-end py-3 bg-gradient-to-t from-white dark:from-primary">
           <h1 className="font-semibold text-4xl dark:text-highlight-dark text-highlight">
             {title}
+            
           </h1>
         </div>
       ) : null}

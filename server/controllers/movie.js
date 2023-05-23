@@ -374,7 +374,8 @@ exports.getLatestUploads = async (req, res) => {
     .sort("-createdAt")
     .limit(parseInt(limit));
 
-  const movies = results.map((m) => {
+  const movies =  results.map((m) => {
+    
     return {
       id: m._id,
       title: m.title,

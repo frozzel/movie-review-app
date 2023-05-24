@@ -1,7 +1,8 @@
 import React from "react";
+import { AiFillStar } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { getPoster } from "../../utils/helper";
 import GridContainer from "../GridContainer";
-import RatingStar from "../RatingStar";
 
 const trimTitle = (text = "") => {
   if (text.length <= 20) return text;
@@ -26,12 +27,12 @@ export default function MovieList({ title, movies = [] }) {
 }
 
 const ListItem = ({ movie }) => {
-  const { id, title, poster, reviews } = movie;
+  const { id, responsivePosters, title, poster, reviews } = movie;
   return (
     <Link to={"/movie/" + id}>
       <img
         className="aspect-video object-cover w-full"
-        src={poster}
+        src={getPoster(responsivePosters) || poster}
         alt={title}
       />
       <h1
@@ -40,7 +41,14 @@ const ListItem = ({ movie }) => {
       >
         {trimTitle(title)}
       </h1>
-      <RatingStar rating={reviews.ratingAvg} />
+      {reviews?.ratingAvg ? (
+        <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
+          <span>{reviews?.ratingAvg}</span>
+          <AiFillStar />
+        </p>
+      ) : (
+        <p className="text-highlight dark:text-highlight-dark">No reviews</p>
+      )}
     </Link>
   );
 };

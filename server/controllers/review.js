@@ -18,7 +18,7 @@ exports.addReview = async (req, res) => {
     parentMovie: movie._id,
   });
   if (isAlreadyReviewed)
-    return sendError(res, "Invalid request, review is already Done!");
+    return sendError(res, "Invalid request, review is already their!");
 
   // create and update review.
   const newReview = new Review({
@@ -35,7 +35,9 @@ exports.addReview = async (req, res) => {
   // saving new review
   await newReview.save();
 
-  res.json({ message: "Your review has been added." });
+  const reviews = await getAverageRatings(movie._id);
+
+  res.json({ message: "Your review has been added.", reviews });
 };
 
 exports.updateReview = async (req, res) => {

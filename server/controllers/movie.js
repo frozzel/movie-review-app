@@ -1,4 +1,11 @@
-const { sendError, formatActor, relatedMovieAggregation, getAverageRatings, topRatedMoviesPipeline } = require("../utils/helper");
+const {
+  sendError,
+  formatActor,
+  averageRatingPipeline,
+  relatedMovieAggregation,
+  getAverageRatings,
+  topRatedMoviesPipeline,
+} = require("../utils/helper");
 const cloudinary = require("../cloud");
 const Movie = require("../models/movie");
 const Review = require("../models/review");
@@ -212,10 +219,11 @@ exports.updateMovie = async (req, res) => {
   if (file) {
     // removing poster from cloud if there is any.
     const posterID = movie.poster?.public_id;
+    console.log(posterID);
     if (posterID) {
       const { result } = await cloudinary.uploader.destroy(posterID);
       if (result !== "ok") {
-        return sendError(res, "Cou ld not update poster at the moment!");
+        return sendError(res, "Could not update poster at the moment!");
       }
 
       // uploading poster
@@ -251,15 +259,16 @@ exports.updateMovie = async (req, res) => {
 
   await movie.save();
 
-  res.json({ message: "Movie is updated", movie: {
-    id: movie._id,
-    title: movie.title,
-    poster: movie.poster?.url,
-    responsivePosters: movie.poster?.responsive,
-    genres: movie.genres,
-    status: movie.status,
-    
-  } });
+  res.json({
+    message: "Movie is updated",
+    movie: {
+      id: movie._id,
+      title: movie.title,
+      poster: movie.poster?.url,
+      genres: movie.genres,
+      status: movie.status,
+    },
+  });
 };
 
 exports.removeMovie = async (req, res) => {
@@ -348,6 +357,7 @@ exports.getMovieForUpdate = async (req, res) => {
     },
   });
 };
+
 exports.searchMovies = async (req, res) => {
   const { title } = req.query;
 
@@ -399,19 +409,17 @@ exports.getSingleMovie = async (req, res) => {
     "director writers cast.actor"
   );
 
-  // const [aggregatedResponse] = await Review.aggregate(
-  //   averageRatingPipeline(movie._id)
-  // );
+  const [aggregatedResponse] = await Review.aggregate(
+    averageRatingPipeline(movie._id)
+  );
 
-  // const reviews = {};
+  const reviews = {};
 
-  // if (aggregatedResponse) {
-  //   const { ratingAvg, reviewCount } = aggregatedResponse;
-  //   reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
-  //   reviews.reviewCount = reviewCount;
-  // }
-
-  const reviews = await getAverageRatings(movie._id);//{...reviews}
+  if (aggregatedResponse) {
+    const { ratingAvg, reviewCount } = aggregatedResponse;
+    reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+    reviews.reviewCount = reviewCount;
+  }
 
   const {
     _id: id,
@@ -510,4 +518,33 @@ exports.getTopRatedMovies = async (req, res) => {
   const topRatedMovies = await Promise.all(movies.map(mapMovies));
 
   res.json({ movies: topRatedMovies });
+};
+
+exports.searchPublicMovies = async (req, res) => {
+  const { title } = req.query;
+
+  if (!title.trim()) return sendError(res, "Invalid request!");
+
+  const movies = await Movie.find({
+    title: { $regex: title, $options: "i" },
+    status: "public",
+  });
+
+  const mapMovies = async (m) => {
+    const reviews = await getAverageRatings(m._id);
+
+    return {
+      id: m._id,
+      title: m.title,
+      poster: m.poster?.url,
+      responsivePosters: m.poster?.responsive,
+      reviews: { ...reviews },
+    };
+  };
+
+  const results = await Promise.all(movies.map(mapMovies));
+
+  res.json({
+    results,
+  });
 };

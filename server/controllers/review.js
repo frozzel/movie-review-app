@@ -8,6 +8,8 @@ exports.addReview = async (req, res) => {
   const { content, rating } = req.body;
   const userId = req.user._id;
 
+  if (!req.user.isVerified) return sendError(res, "Please verify you email first!");
+
   if (!isValidObjectId(movieId)) return sendError(res, "Invalid Movie!");
 
   const movie = await Movie.findOne({ _id: movieId, status: "public" });
@@ -78,34 +80,34 @@ exports.updateReview = async (req, res) => {
 };
 
 exports.getReviewsByMovie = async (req, res) => {
-    const { movieId } = req.params;
-  
-    if (!isValidObjectId(movieId)) return sendError(res, "Invalid movie ID!");
-  
-    const movie = await Movie.findById(movieId)
-      .populate({
-        path: "reviews",
-        populate: {
-          path: "owner",
-          select: "name",
-        },
-      })
-      .select("reviews");
-  
-    const reviews = movie.reviews.map((r) => {
-      const { owner, content, rating, _id: reviewID } = r;
-      const { name, _id: ownerId } = owner;
-  
-      return {
-        id: reviewID,
-        owner: {
-          id: ownerId,
-          name,
-        },
-        content,
-        rating,
-      };
-    });
-  
-    res.json({ reviews });
-  };
+  const { movieId } = req.params;
+
+  if (!isValidObjectId(movieId)) return sendError(res, "Invalid movie ID!");
+
+  const movie = await Movie.findById(movieId)
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "owner",
+        select: "name",
+      },
+    })
+    .select("reviews title");
+
+  const reviews = movie.reviews.map((r) => {
+    const { owner, content, rating, _id: reviewID } = r;
+    const { name, _id: ownerId } = owner;
+
+    return {
+      id: reviewID,
+      owner: {
+        id: ownerId,
+        name,
+      },
+      content,
+      rating,
+    };
+  });
+
+  res.json({ movie: { reviews, title: movie.title } });
+};

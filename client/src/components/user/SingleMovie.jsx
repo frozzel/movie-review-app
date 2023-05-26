@@ -8,6 +8,7 @@ import AddRatingModal from "../models/AddRatingModal";
 import ProfileModal from "../models/ProfileModal";
 import RatingStar from "../RatingStar";
 import RelatedMovies from "../RelatedMovies";
+import MovieReviews from "./MovieReviews";
 
 const convertReviewCount = (count = 0) => {
   if (count <= 999) return count;
@@ -181,6 +182,7 @@ export default function SingleMovie() {
         onClose={hideRatingModal}
         onSuccess={handleOnRatingSuccess}
       />
+      <MovieReviews movieId={movieId} />
     </div>
   );
 }

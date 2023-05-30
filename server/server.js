@@ -10,6 +10,7 @@ const actorRouter = require('./routes/actor');// import user router
 const movieRouter = require('./routes/movie');// import user router
 const reviewRouter = require("./routes/review"); // import review router
 const adminRouter = require("./routes/admin"); // import admin router
+const movie1Router = require("./routes/movie1"); // import admin router
 
 const cors = require('cors'); // import cors (cross origin resource sharing) can also be done in the client side with proxy
 const { handleNotFound } = require('./utils/helper');
@@ -25,6 +26,7 @@ app.use("/api/admin", adminRouter); // use admin router
 app.use('/api/user', userRouter);// use user router
 app.use('/api/actor', actorRouter);// use user router
 app.use('/api/movie', movieRouter);// use user router
+app.use('/api/movie1', movie1Router);// use user router
 app.use("/api/review", reviewRouter); // use review router
 
 app.use('/*', handleNotFound) // catch 404 and forward to error handler

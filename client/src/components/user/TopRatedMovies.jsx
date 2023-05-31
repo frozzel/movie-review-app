@@ -10,7 +10,7 @@ export default function TopRatedMovies() {
   const fetchMovies = async (signal) => {
     const { error, results } = await getNowPlaying(null, signal);
     if (error) return updateNotification("error", error);
-
+    results.splice(0, 10)
     setMovies([...results]);
   };
 

@@ -20,7 +20,7 @@ exports.addReview = async (req, res) => {
     parentMovie: movie._id,
   });
   if (isAlreadyReviewed)
-    return sendError(res, "Invalid request, review is already their!");
+    return sendError(res, "Invalid request, review is already there!");
 
   // create and update review.
   const newReview = new Review({

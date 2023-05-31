@@ -399,7 +399,7 @@ exports.getLatestUploads = async (req, res) => {
 
 exports.getSingleMovie = async (req, res) => {
   const { movieId } = req.params;
-
+  
   // mongoose.Types.ObjectId(movieId)
 
   if (!isValidObjectId(movieId))

@@ -12,10 +12,21 @@ export const getUpcomingMovies = async () => {
       return catchError(error);
     }
   };
-  export const getNowPlaying = async () => {
- 
-    try {
-      const { data } = await client("/movie1/nowPlaying");
+export const getNowPlaying = async () => {
+
+  try {
+    const { data } = await client("/movie1/nowPlaying");
+    
+    return data;
+    
+  } catch (error) {
+    return catchError(error);
+  }
+};
+
+export const getPopularMovies = async () => {
+  try {
+      const { data } = await client("/movie1/popular");
       
       return data;
       
@@ -24,13 +35,19 @@ export const getUpcomingMovies = async () => {
     }
   };
 
-  export const getTopRatedTv = async () => {
+  export const getSingleMovie = async (id) => {
     try {
-        const { data } = await client("/movie1/topRatedTv");
-        
-        return data;
-        
-      } catch (error) {
-        return catchError(error);
-      }
-    };
+      const { data } = await client("/movie1/single/" + id);
+      return data;
+    } catch (error) {
+      return catchError(error);
+    }
+  };
+  export const getRelatedMovies = async (id) => {
+    try {
+      const { data } = await client("/movie1/related/" + id);
+      return data;
+    } catch (error) {
+      return catchError(error);
+    }
+  };

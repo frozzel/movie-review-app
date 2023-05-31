@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getRelatedMovies } from "../api/movie";
+import { getRelatedMovies } from "../api/movie1";
 import { useNotification } from "../hooks";
 import MovieList from "./user/MovieList";
 

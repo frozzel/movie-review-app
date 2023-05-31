@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { getLatestUploads } from "../../api/movie";
+// import { getLatestUploads } from "../../api/movie";
+import { getUpcomingMovies } from "../../api/movie1";  
 import { useNotification } from "../../hooks";
 
 let count = 0;
@@ -22,20 +23,22 @@ export default function HeroSlidShow() {
   const { updateNotification } = useNotification();
 
   const fetchLatestUploads = async (signal) => {
-    const { error, movies } = await getLatestUploads(signal);
+    // const { error, movies } = await getLatestUploads(signal);
+    const { error, results } = await getUpcomingMovies(signal);
+    
     if (error) return updateNotification("error", error);
-
-    setSlides([...movies]);
-    setCurrentSlide(movies[0]);
+    
+    setSlides([...results]);
+    setCurrentSlide(results[0]);
   };
 
   const startSlideShow = () => {
     intervalId = setInterval(() => {
       newTime = Date.now();
       const delta = newTime - lastTime;
-      if (delta < 4000) return clearInterval(intervalId);
+      if (delta < 6000) return clearInterval(intervalId);
       handleOnNextClick();
-    }, 3500);
+    }, 6000);
   };
 
   const pauseSlideShow = () => {
@@ -131,7 +134,7 @@ export default function HeroSlidShow() {
         <Slide
           ref={slideRef}
           title={currentSlide.title}
-          src={currentSlide.poster}
+          src={currentSlide.backdrop_path}
           id={currentSlide.id}
         />
 
@@ -140,7 +143,7 @@ export default function HeroSlidShow() {
           ref={clonedSlideRef}
           onAnimationEnd={handleAnimationEnd}
           className="absolute inset-0"
-          src={clonedSlide.poster}
+          src={clonedSlide.backdrop_path}
           title={clonedSlide.title}
           id={currentSlide.id}
         />
@@ -156,11 +159,12 @@ export default function HeroSlidShow() {
         <h1 className="font-semibold text-2xl text-primary dark:text-white">
           Up Next
         </h1>
-        {upNext.map(({ poster, id }) => {
+        {upNext.map(({ backdrop_path, id }) => {const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
           return (
+            
             <img
               key={id}
-              src={poster}
+              src={newScr}
               alt=""
               className="aspect-video object-cover rounded"
             />
@@ -188,6 +192,7 @@ const SlideShowController = ({ onNextClick, onPrevClick }) => {
 
 const Slide = forwardRef((props, ref) => {
   const { title, id, src, className = "", ...rest } = props;
+  const newScr = "https://image.tmdb.org/t/p/original" + src;
   return (
     <Link
       to={"/movie/" + id}
@@ -195,8 +200,8 @@ const Slide = forwardRef((props, ref) => {
       className={"w-full cursor-pointer block " + className}
       {...rest}
     >
-      {src ? (
-        <img className="aspect-video object-cover" src={src} alt="" />
+      {newScr ? (
+        <img className="aspect-video object-cover" src={newScr} alt="" />
       ) : null}
       {title ? (
         <div className="absolute inset-0 flex flex-col justify-end py-3 bg-gradient-to-t from-white via-transparent dark:from-primary dark:via-transparent">

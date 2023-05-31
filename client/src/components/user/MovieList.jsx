@@ -1,7 +1,7 @@
 import React from "react";
 import { AiFillStar } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { getPoster } from "../../utils/helper";
+// import { getPoster } from "../../utils/helper";
 import GridContainer from "../GridContainer";
 
 const trimTitle = (text = "") => {
@@ -29,12 +29,13 @@ export default function MovieList({ title, movies = [] }) {
 }
 
 const ListItem = ({ movie }) => {
-  const { id, responsivePosters, title, poster, reviews } = movie;
+  const { id, title, backdrop_path, reviews , name} = movie;
+  const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
   return (
     <Link to={"/movie/" + id}>
       <img
         className="aspect-video object-cover w-full"
-        src={getPoster(responsivePosters) || poster}
+        src={newScr}
         alt={title}
       />
       <h1
@@ -42,6 +43,12 @@ const ListItem = ({ movie }) => {
         title={title}
       >
         {trimTitle(title)}
+      </h1>
+      <h1
+        className="text-lg dark:text-white text-secondary font-semibold"
+        title={name}
+      >
+        {trimTitle(name)}
       </h1>
       {reviews?.ratingAvg ? (
         <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">

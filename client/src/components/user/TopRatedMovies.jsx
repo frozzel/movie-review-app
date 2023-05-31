@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getTopRatedMovies } from "../../api/movie";
+import { getNowPlaying } from "../../api/movie1";
 import { useNotification } from "../../hooks";
 import MovieList from "./MovieList";
 
@@ -8,10 +8,10 @@ export default function TopRatedMovies() {
   const { updateNotification } = useNotification();
 
   const fetchMovies = async (signal) => {
-    const { error, movies } = await getTopRatedMovies(null, signal);
+    const { error, results } = await getNowPlaying(null, signal);
     if (error) return updateNotification("error", error);
 
-    setMovies([...movies]);
+    setMovies([...results]);
   };
 
   useEffect(() => {
@@ -23,5 +23,5 @@ export default function TopRatedMovies() {
     };
   }, []);
 
-  return <MovieList movies={movies} title="Most Reviewed (Movies)" />;
+  return <MovieList movies={movies} title="Now Playing (Movies)" />;
 }

@@ -2,18 +2,23 @@ const { isValidObjectId } = require("mongoose");
 const Movie = require("../models/movie");
 const Review = require("../models/review");
 const { sendError } = require("../utils/helper");
+const { getAverageRatings } = require("../utils/helper");
+
+
 
 exports.addReview = async (req, res) => {
   const { movieId } = req.params;
   const { content, rating } = req.body;
   const userId = req.user._id;
+  const movie = await Movie.findOne({ TMDB_Id: movieId });
 
   if (!req.user.isVerified) return sendError(res, "Please verify you email first!");
 
-  if (!isValidObjectId(movieId)) return sendError(res, "Invalid Movie!");
-
-  const movie = await Movie.findOne({ _id: movieId, status: "public" });
-  if (!movie) return sendError(res, "Movie not found!", 404);
+  if(!movie){
+    const newMovie = new Movie({TMDB_Id: movieId});
+  
+    await newMovie.save();
+  } else if(movie) {
 
   const isAlreadyReviewed = await Review.findOne({
     owner: userId,
@@ -40,6 +45,7 @@ exports.addReview = async (req, res) => {
   const reviews = await getAverageRatings(movie._id);
 
   res.json({ message: "Your review has been added.", reviews });
+  }
 };
 
 exports.updateReview = async (req, res) => {
@@ -82,10 +88,10 @@ exports.updateReview = async (req, res) => {
 exports.getReviewsByMovie = async (req, res) => {
   const { movieId } = req.params;
 
-  if (!isValidObjectId(movieId)) return sendError(res, "Invalid movie ID!");
-
-  const movie = await Movie.findById(movieId)
-    .populate({
+  // if (!isValidObjectId(movieId)) return sendError(res, "Invalid movie ID!");
+  
+  const movie = await Movie.findOne({ TMDB_Id: movieId })
+      .populate({
       path: "reviews",
       populate: {
         path: "owner",
@@ -93,6 +99,10 @@ exports.getReviewsByMovie = async (req, res) => {
       },
     })
     .select("reviews title");
+
+    if (!movie) return null;
+  
+    
 
   const reviews = movie.reviews.map((r) => {
     const { owner, content, rating, _id: reviewID } = r;

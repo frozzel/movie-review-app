@@ -8,10 +8,10 @@ export default function TopRatedMovies() {
   const { updateNotification } = useNotification();
 
   const fetchMovies = async (signal) => {
-    const { error, results } = await getNowPlaying(null, signal);
+    const { error, movies } = await getNowPlaying(null, signal);
     if (error) return updateNotification("error", error);
-    results.splice(0, 10)
-    setMovies([...results]);
+    // results.splice(0, 10)
+    setMovies([...movies]);
   };
 
   useEffect(() => {

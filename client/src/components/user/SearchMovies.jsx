@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { searchPublicMovies } from "../../api/movie";
+import { searchPublicMovies } from "../../api/movie1";
 import { useNotification } from "../../hooks";
 import Container from "../Container";
 import NotFoundText from "../NotFoundText";
@@ -16,16 +16,16 @@ export default function SearchMovies() {
   const { updateNotification } = useNotification();
 
   const searchMovies = async (val) => {
-    const { error, results } = await searchPublicMovies(val);
+    const { error, movies } = await searchPublicMovies(val);
     if (error) return updateNotification("error", error);
 
-    if (!results.length) {
+    if (!movies.length) {
       setResultNotFound(true);
       return setMovies([]);
     }
 
     setResultNotFound(false);
-    setMovies([...results]);
+    setMovies([...movies]);
   };
 
   useEffect(() => {

@@ -1,6 +1,8 @@
 const crypto = require("crypto");
 const cloudinary = require("../cloud");
 const Review = require("../models/review");
+const Movie = require("../models/movie");
+const movie = require("../models/movie");
 
 exports.sendError = (res, error, statusCode = 401) =>
   res.status(statusCode).json({ error });
@@ -147,8 +149,12 @@ exports.topRatedMoviesPipeline = (type) => {
 };
 
 exports.getAverageRatings = async (movieId) => {
+  const movieReview = await Movie.findOne({ TMDB_Id: movieId });
+  if (movieReview){
+
+  
   const [aggregatedResponse] = await Review.aggregate(
-    this.averageRatingPipeline(movieId)
+    this.averageRatingPipeline(movieReview._id)
   );
   const reviews = {};
 
@@ -159,4 +165,17 @@ exports.getAverageRatings = async (movieId) => {
   }
 
   return reviews;
+  } else if (!movieReview) {
+    const [aggregatedResponse] = await Review.aggregate(
+      this.averageRatingPipeline(movieId)
+    );
+    const reviews = {};
+    // if(!aggregatedResponse)return null;
+    if (aggregatedResponse) {
+      const { ratingAvg, reviewCount } = aggregatedResponse;
+      reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+      reviews.reviewCount = reviewCount;
+    }
+    return reviews;
+  }
 };

@@ -51,3 +51,11 @@ export const getPopularMovies = async () => {
       return catchError(error);
     }
   };
+  export const searchPublicMovies = async (title) => {
+    try {
+      const { data } = await client("/movie1/search-public?title=" + title);
+      return data;
+    } catch (error) {
+      return catchError(error);
+    }
+  };

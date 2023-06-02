@@ -5,70 +5,70 @@ const movieSchema = mongoose.Schema({
     title: {
         type: String,
         trim: true,
-        required: true
+        required: false
     },
     storyLine: {
         type: String,
         trim: true,
-        required: true
+        required: false
     },
-    director: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Actor',
-    },
+    // director: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Actor',
+    // },
     releaseDate: {
         type: Date,
-        required: true
+        required: false
     },
-    status: {
+    TMDB_Id: {
         type: String,
-        required: true,
-        enum: ['public', 'private']
+        required: false,
+        // enum: ['public', 'private']
     },
     type: {
         type: String,
-        required: true,
+        required: false,
         
     },
     genres: {
         type: [String],
-        required: true,
+        required: false,
         enum: genres
     },
     tags: {
         type: [String],
-        required: true,
+        required: false,
         
     },
-    cast: [
-        {
-            actor: {type: mongoose.Schema.Types.ObjectId, ref: 'Actor'},
-            roleAs: String,
-            leadActor: Boolean,
-        }
-    ],
-    writers: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Actor",
-        },
-      ],
-    poster: {
-        type: Object,
-        url: { type: String, required: true },
-        public_id: { type: String, required: true },
-        required: true,
-      },
-    trailer: {
-        type: Object,
-        url: { type: String, required: true },
-        public_id: { type: String, required: true },
-        required: true,
-      },
+    // cast: [
+    //     {
+    //         actor: {type: mongoose.Schema.Types.ObjectId, ref: 'Actor'},
+    //         roleAs: String,
+    //         leadActor: Boolean,
+    //     }
+    // ],
+    // writers: [
+    //     {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       ref: "Actor",
+    //     },
+    //   ],
+    // poster: {
+    //     type: Object,
+    //     url: { type: String, required: false },
+    //     public_id: { type: String, required: false },
+    //     required: false,
+    //   },
+    // trailer: {
+    //     type: Object,
+    //     url: { type: String, required: false },
+    //     public_id: { type: String, required: false },
+    //     required: false,
+    //   },
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
     language: {
         type: String,
-        required: true,
+        required: false,
       },
     },
     { timestamps: true }

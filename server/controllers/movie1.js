@@ -87,6 +87,8 @@ exports.getSingleMovie = async (req, res) => {
   const {movieId} = req.params;
   
   const url = 'https://api.themoviedb.org/3/movie/' +movieId+ '?language=en-US';
+  
+
   const options = {
     method: 'GET',
     headers: {
@@ -96,7 +98,10 @@ exports.getSingleMovie = async (req, res) => {
   };
   try{
     const response = await fetch(url, options)
+ 
     const movie = await response.json();
+    
+    
     const movieReview = await Movie.findOne({ TMDB_Id: movieId });
     if(movieReview) {
       const [aggregatedResponse] = await Review.aggregate(
@@ -175,7 +180,7 @@ exports.getSingleMovie = async (req, res) => {
     }
     } catch (error) {
       console.log(error);
-      return sendError(res, "Movie id is not valid!"); 
+      return sendError(res, "Movie/TV id is not valid!"); 
     }
 }
 
@@ -234,7 +239,7 @@ exports.searchMovies = async (req, res) => {
         reviews: { ...reviews },
       };
     };
-    const relatedMovies = await Promise.all(movies.results.slice(0, 20).map(mapMovies));
+    const relatedMovies = await Promise.all(movies.results.slice(0, 10).map(mapMovies));
   
     res.json({ movies: relatedMovies });
   } catch (error) {
@@ -242,3 +247,193 @@ exports.searchMovies = async (req, res) => {
     return sendError(res, "Movie id is not valid!"); 
   }
 }
+exports.getPopularTv = async (req, res) => {
+  const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: process.env.TMDB_READ_TOKEN
+      }
+    };
+  try{
+    const response = await fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options)
+    const movie = await response.json();
+    const mapMovies = async (m) => {
+      const reviews = await getAverageRatings(m.id);
+      return {
+        id: m.id,
+        title: m.name,
+        backdrop_path: m.backdrop_path,
+        reviews: { ...reviews },
+      };
+    };
+    const nowPlayingMovies = await Promise.all(movie.results.slice(0, 10).map(mapMovies));
+    res.json({ movies: nowPlayingMovies });
+  } catch (error) {
+    console.log(error);
+  }
+  
+}
+exports.getSingleTv = async (req, res) => {
+  const {movieId} = req.params;
+  
+  const url = 'https://api.themoviedb.org/3/tv/' +movieId+ '?language=en-US';
+  
+
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: process.env.TMDB_READ_TOKEN
+    }
+  };
+  try{
+    const response = await fetch(url, options)
+ 
+    const movie = await response.json();
+    
+    
+    const movieReview = await Movie.findOne({ TMDB_Id: movieId });
+    if(movieReview) {
+      const [aggregatedResponse] = await Review.aggregate(
+        averageRatingPipeline(movieReview._id)
+      );
+  
+      const reviews = {};
+      if(!aggregatedResponse)return null;
+      if (aggregatedResponse) {
+        const { ratingAvg, reviewCount } = aggregatedResponse;
+        reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+        reviews.reviewCount = reviewCount;
+      }
+      
+    
+    const {
+      id,
+      title,
+      overview,
+      release_date,
+      genres,
+      original_language,
+      backdrop_path,
+      
+      
+    } = movie;
+
+    res.json({
+      movie: {
+        id,
+        title,
+        overview,
+        release_date,
+        genres: genres.map((g) => g.name),
+        original_language,
+        backdrop_path,
+        reviews: { ...reviews },
+      },
+    })} else if (!movieReview) {
+      const [aggregatedResponse] = await Review.aggregate(
+        averageRatingPipeline(movieId)
+      );
+  
+      const reviews = {};
+      // if(!aggregatedResponse)return null;
+      if (aggregatedResponse) {
+        const { ratingAvg, reviewCount } = aggregatedResponse;
+        reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+        reviews.reviewCount = reviewCount;
+      }
+      
+      const {
+        id,
+        title,
+        overview,
+        release_date,
+        genres,
+        original_language,
+        backdrop_path,
+        
+        
+      } = movie;
+  
+      res.json({
+        movie: {
+          id,
+          title,
+          overview,
+          release_date,
+          genres: genres.map((g) => g.name),
+          original_language,
+          backdrop_path,
+          reviews: { ...reviews },
+        },
+      });
+    }
+    } catch (error) {
+      console.log(error);
+      return sendError(res, "Movie/TV id is not valid!"); 
+    }
+}
+exports.searchTv = async (req, res) => {
+  const { title } = req.query;
+  const url = 'https://api.themoviedb.org/3/search/tv?query='+title+'&include_adult=false&language=en-US&page=1'
+  // if (!title.trim()) return sendError(res, "Invalid request!");
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: process.env.TMDB_READ_TOKEN
+    }
+  };
+  try{
+    const response = await fetch(url, options);
+    const tv = await response.json();
+
+    const mapMovies = async (m) => {
+      const reviews = await getAverageRatings(m.id);
+      return {
+        id: m.id,
+        title: m.name,
+        backdrop_path: m.backdrop_path,
+        reviews: { ...reviews },
+      };
+    };
+    const relatedMovies = await Promise.all(tv.results.slice(0, 10).map(mapMovies));
+  
+    res.json({ tv: relatedMovies });
+  } catch (err) {
+    console.log(err);
+    return sendError(res, "Tv id is not valid!"); 
+  }
+}
+exports.getRelatedTv = async (req, res) => {
+    const {movieId} = req.params;
+    const url = 'https://api.themoviedb.org/3/tv/' +movieId+ '/similar?language=en-US&page=1';
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: process.env.TMDB_READ_TOKEN
+      }
+    };
+    try{
+      const response = await fetch(url, options)
+      const tv = await response.json();
+      
+      const mapMovies = async (m) => {
+        const reviews = await getAverageRatings(m.id);
+        return {
+          id: m.id,
+          title: m.name,
+          backdrop_path: m.backdrop_path,
+          reviews: { ...reviews },
+        };
+      };
+      const relatedTv = await Promise.all(tv.results.slice(0, 5).map(mapMovies));
+    
+      res.json({ tv: relatedTv });
+      } catch (error) {
+        console.log(error);
+        return sendError(res, "TV Series id is not valid!"); 
+      }
+  }

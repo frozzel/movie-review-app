@@ -9,7 +9,7 @@ const trimTitle = (text = "") => {
   return text.substring(0, 20) + "..";
 };
 
-export default function MovieList({ title, movies = [] }) {
+export default function TvList({ title, movies = [] }) {
   
   if (!movies.length) return null;
 
@@ -22,19 +22,19 @@ export default function MovieList({ title, movies = [] }) {
       ) : null}
       <GridContainer>
         {movies.map((movie) => {
-          return <ListItem key={movie.id} movie={movie} />;
+          return <TvItem key={movie.id} movie={movie} />;
         })}
       </GridContainer>
     </div>
   );
 }
 
-const ListItem = ({ movie }) => {
+const TvItem = ({ movie }) => {
   const { id, title, backdrop_path, reviews , name} = movie;
   if (backdrop_path===null || backdrop_path===undefined){
     const  newScr = '/placeholder.png'
     return (
-      <Link to={"/movie/" + id}>
+      <Link to={"/tv/" + id}>
         <img
           className="aspect-video object-cover w-full"
           src={newScr}
@@ -70,7 +70,7 @@ const ListItem = ({ movie }) => {
   // const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
   
   return (
-    <Link to={"/movie/" + id}>
+    <Link to={"/tv/" + id}>
       <img
         className="aspect-video object-cover w-full"
         src={newScr}

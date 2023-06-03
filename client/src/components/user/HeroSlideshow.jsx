@@ -117,7 +117,7 @@ export default function HeroSlidShow() {
       );
       ac.abort();
     };
-  }, []);
+  }, [ ]);
 
   useEffect(() => {
     if (slides.length && visible) {
@@ -126,6 +126,8 @@ export default function HeroSlidShow() {
     } else pauseSlideShow();
   }, [slides.length, visible]);
 
+  const newScr = "https://image.tmdb.org/t/p/original" + clonedSlide.backdrop_path
+  const newScr1 = "https://image.tmdb.org/t/p/original" + currentSlide.backdrop_path
   return (
     <div className="w-full flex">
       {/* Slide show section */}
@@ -134,7 +136,7 @@ export default function HeroSlidShow() {
         <Slide
           ref={slideRef}
           title={currentSlide.title}
-          src={currentSlide.backdrop_path}
+          src={newScr1}
           id={currentSlide.id}
         />
 
@@ -143,7 +145,7 @@ export default function HeroSlidShow() {
           ref={clonedSlideRef}
           onAnimationEnd={handleAnimationEnd}
           className="absolute inset-0"
-          src={clonedSlide.backdrop_path}
+          src={newScr}
           title={clonedSlide.title}
           id={currentSlide.id}
         />
@@ -159,7 +161,8 @@ export default function HeroSlidShow() {
         <h1 className="font-semibold text-2xl text-primary dark:text-white">
           Up Next
         </h1>
-        {upNext.map(({ backdrop_path, id }) => {const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
+        {upNext.map(({ backdrop_path, id }) => {
+          const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
           return (
             
             <img
@@ -192,7 +195,7 @@ const SlideShowController = ({ onNextClick, onPrevClick }) => {
 
 const Slide = forwardRef((props, ref) => {
   const { title, id, src, className = "", ...rest } = props;
-  const newScr = "https://image.tmdb.org/t/p/original" + src;
+  // const newScr = "https://image.tmdb.org/t/p/original" + src;
   return (
     <Link
       to={"/movie/" + id}
@@ -200,8 +203,8 @@ const Slide = forwardRef((props, ref) => {
       className={"w-full cursor-pointer block " + className}
       {...rest}
     >
-      {newScr ? (
-        <img className="aspect-video object-cover" src={newScr} alt="" />
+      {src ? (
+        <img className="aspect-video object-cover" src={src} alt="" />
       ) : null}
       {title ? (
         <div className="absolute inset-0 flex flex-col justify-end py-3 bg-gradient-to-t from-white via-transparent dark:from-primary dark:via-transparent">

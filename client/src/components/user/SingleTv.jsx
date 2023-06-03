@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getSingleMovie } from "../../api/movie1";
+import { getSingleTv } from "../../api/movie1";
 import { useAuth, useNotification } from "../../hooks";
 import Container from "../Container";
 import CustomButtonLink from "../CustomButtonLink";
 import AddRatingModal from "../models/AddRatingModal";
 // import ProfileModal from "../models/ProfileModal";
 import RatingStar from "../RatingStar";
-import RelatedMovies from "../RelatedMovies";
+import SimilarTv from "./SimilarTv";
 import MovieReviews from "./MovieReviews";
 
 const convertReviewCount = (count = 0) => {
@@ -20,7 +20,7 @@ const convertDate = (date = "") => {
   return date.split("T")[0];
 };
 
-export default function SingleMovie() {
+export default function SingleTv() {
   const [ready, setReady] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [movie, setMovie] = useState({});
@@ -31,11 +31,11 @@ export default function SingleMovie() {
   const { updateNotification } = useNotification();
   const { authInfo } = useAuth();
   const { isLoggedIn } = authInfo;
-
+  
   const navigate = useNavigate();
 
   const fetchMovie = async () => {
-    const { error, movie } = await getSingleMovie(movieId);
+    const { error, movie } = await getSingleTv(movieId);
     if (error) return updateNotification("error", error);
 
     setReady(true);
@@ -66,7 +66,7 @@ export default function SingleMovie() {
 
   useEffect(() => {
     if (movieId) fetchMovie();
-  }, []);
+  }, [movieId]);
 
   if (!ready)
     return (
@@ -159,7 +159,7 @@ export default function SingleMovie() {
             ))}
           </ListWithLabel>
 
-          <RelatedMovies movieId={movieId} />
+          <SimilarTv movieId={movieId} />
         </div>
       </Container>
 

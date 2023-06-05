@@ -115,6 +115,37 @@
   }
 }
 
+@media only screen and (min-width: 576px){
+  .real-ply{
+    height: 200px;
+    width: auto;
+  }
+  }
+  @media only screen and (max-width: 576px){
+    .real-ply{
+      height: 200px;
+      width: auto;
+    }
+    }
+@media only screen and (min-width: 768px){
+  .real-ply{
+    height: 330px;
+    width: auto;
+  }
+    }
+@media only screen and (min-width: 992px){
+  .real-ply{
+    height: 450px;
+    width: 100%;
+  }
+      }
+@media only screen and (min-width: 1280px){
+  .real-ply{
+    height: 720px;
+    /* width: 100%; */
+  }
+      }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

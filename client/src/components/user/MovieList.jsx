@@ -64,11 +64,6 @@ const ListItem = ({ movie }) => {
     );
   } else  if (backdrop_path){
     const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
-  
-    
-  
-  // const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
-  
   return (
     <Link to={"/movie/" + id}>
       <img

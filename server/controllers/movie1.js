@@ -17,8 +17,20 @@ exports.getUpcomingMovies = async (req, res) => {
     try{
       const response = await fetch('https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&region=us', options);
     
-      const data = await response.json();
-      res.json(data);
+      const movie = await response.json();
+      const mapMovies = async (m) => {
+        const reviews = await getAverageRatings(m.id);
+        const url = "https://image.tmdb.org/t/p/original"+m.backdrop_path;
+        return {
+          id: m.id,
+          title: m.title,
+          backdrop_path: url,
+          reviews: { ...reviews },
+        };
+      };
+      const movies = await Promise.all(movie.results.slice(0, 6).map(mapMovies));
+      res.json({ movies });
+     
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +98,7 @@ exports.getPopularMovies = async (req, res) => {
 exports.getSingleMovie = async (req, res) => {
   const {movieId} = req.params;
   
-  const url = 'https://api.themoviedb.org/3/movie/' +movieId+ '?language=en-US';
+  const url = 'https://api.themoviedb.org/3/movie/' +movieId+ '?language=en-US&append_to_response=videos';
   
 
   const options = {
@@ -100,7 +112,7 @@ exports.getSingleMovie = async (req, res) => {
     const response = await fetch(url, options)
  
     const movie = await response.json();
-    
+    // const data = await response.json();
     
     const movieReview = await Movie.findOne({ TMDB_Id: movieId });
     if(movieReview) {
@@ -125,6 +137,7 @@ exports.getSingleMovie = async (req, res) => {
       genres,
       original_language,
       backdrop_path,
+      videos
       
       
     } = movie;
@@ -138,6 +151,7 @@ exports.getSingleMovie = async (req, res) => {
         genres: genres.map((g) => g.name),
         original_language,
         backdrop_path,
+        trailer: "https://www.youtube.com/embed/" + videos.results[0].key,
         reviews: { ...reviews },
       },
     })} else if (!movieReview) {
@@ -161,10 +175,11 @@ exports.getSingleMovie = async (req, res) => {
         genres,
         original_language,
         backdrop_path,
+        videos
         
         
       } = movie;
-  
+      console.log(videos.results[0].key);
       res.json({
         movie: {
           id,
@@ -174,10 +189,12 @@ exports.getSingleMovie = async (req, res) => {
           genres: genres.map((g) => g.name),
           original_language,
           backdrop_path,
+          trailer: "https://www.youtube.com/embed/" + videos.results[0].key,
           reviews: { ...reviews },
         },
       });
     }
+    // res.json(data);
     } catch (error) {
       console.log(error);
       return sendError(res, "Movie/TV id is not valid!"); 

@@ -23,22 +23,20 @@ export default function HeroSlidShow() {
   const { updateNotification } = useNotification();
 
   const fetchLatestUploads = async (signal) => {
-    // const { error, movies } = await getLatestUploads(signal);
-    const { error, results } = await getUpcomingMovies(signal);
-    
+    const { error, movies } = await getUpcomingMovies(signal);
     if (error) return updateNotification("error", error);
-    
-    setSlides([...results]);
-    setCurrentSlide(results[0]);
+
+    setSlides([...movies]);
+    setCurrentSlide(movies[0]);
   };
 
   const startSlideShow = () => {
     intervalId = setInterval(() => {
       newTime = Date.now();
       const delta = newTime - lastTime;
-      if (delta < 6000) return clearInterval(intervalId);
+      if (delta < 4000) return clearInterval(intervalId);
       handleOnNextClick();
-    }, 6000);
+    }, 3500);
   };
 
   const pauseSlideShow = () => {
@@ -117,7 +115,7 @@ export default function HeroSlidShow() {
       );
       ac.abort();
     };
-  }, [ ]);
+  }, []);
 
   useEffect(() => {
     if (slides.length && visible) {
@@ -126,8 +124,8 @@ export default function HeroSlidShow() {
     } else pauseSlideShow();
   }, [slides.length, visible]);
 
-  const newScr = "https://image.tmdb.org/t/p/original" + clonedSlide.backdrop_path
-  const newScr1 = "https://image.tmdb.org/t/p/original" + currentSlide.backdrop_path
+  // const newScr = "https://image.tmdb.org/t/p/original" + clonedSlide.backdrop_path
+  // const newScr1 = "https://image.tmdb.org/t/p/original" + currentSlide.backdrop_path
   return (
     <div className="w-full flex">
       {/* Slide show section */}
@@ -136,7 +134,7 @@ export default function HeroSlidShow() {
         <Slide
           ref={slideRef}
           title={currentSlide.title}
-          src={newScr1}
+          src={currentSlide.backdrop_path}
           id={currentSlide.id}
         />
 
@@ -145,7 +143,7 @@ export default function HeroSlidShow() {
           ref={clonedSlideRef}
           onAnimationEnd={handleAnimationEnd}
           className="absolute inset-0"
-          src={newScr}
+          src={clonedSlide.backdrop_path}
           title={clonedSlide.title}
           id={currentSlide.id}
         />
@@ -155,19 +153,18 @@ export default function HeroSlidShow() {
           onPrevClick={handleOnPrevClick}
         />
       </div>
-
       {/* Up Next Section */}
       <div className="w-1/5 md:block hidden space-y-3 px-3">
         <h1 className="font-semibold text-2xl text-primary dark:text-white">
           Up Next
         </h1>
         {upNext.map(({ backdrop_path, id }) => {
-          const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
+          // const newScr3 = "https://image.tmdb.org/t/p/original" + backdrop_path
           return (
             
             <img
               key={id}
-              src={newScr}
+              src={backdrop_path}
               alt=""
               className="aspect-video object-cover rounded"
             />
@@ -195,7 +192,6 @@ const SlideShowController = ({ onNextClick, onPrevClick }) => {
 
 const Slide = forwardRef((props, ref) => {
   const { title, id, src, className = "", ...rest } = props;
-  // const newScr = "https://image.tmdb.org/t/p/original" + src;
   return (
     <Link
       to={"/movie/" + id}

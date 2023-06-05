@@ -8,15 +8,18 @@ export default function RelatedMovies({ movieId }) {
 
   const { updateNotification } = useNotification();
 
-  const fetchRelatedMovies = async () => {
-    const { error, movies } = await getRelatedMovies(movieId);
+  const fetchRelatedMovies = async (signal) => {
+    const { error, movies } = await getRelatedMovies(movieId, signal);
     if (error) return updateNotification("error", error);
 
     setMovies([...movies]);
   };
 
   useEffect(() => {
-    if (movieId) fetchRelatedMovies();
+    const ac = new AbortController();
+    if (movieId) fetchRelatedMovies(ac.signal);
+    return () => {
+      ac.abort();}
   }, [movieId]);
-  return <MovieList title="Related Movies" movies={movies} />;
+  return <MovieList movies={movies} title="Related Movies"  />;
 }

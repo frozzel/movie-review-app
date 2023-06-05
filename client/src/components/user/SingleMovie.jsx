@@ -9,6 +9,8 @@ import AddRatingModal from "../models/AddRatingModal";
 import RatingStar from "../RatingStar";
 import RelatedMovies from "../RelatedMovies";
 import MovieReviews from "./MovieReviews";
+import ReactPlayer from 'react-player'
+import TopRatedTVSeries from "./TopRatedTVSeries";
 
 const convertReviewCount = (count = 0) => {
   if (count <= 999) return count;
@@ -66,7 +68,7 @@ export default function SingleMovie() {
 
   useEffect(() => {
     if (movieId) fetchMovie();
-  }, []);
+  }, [movieId]);
 
   if (!ready)
     return (
@@ -84,6 +86,7 @@ export default function SingleMovie() {
     overview,
     original_language,
     release_date,
+    trailer,
     reviews = {},
     genres = [],
   } = movie;
@@ -93,7 +96,8 @@ export default function SingleMovie() {
   return (
     <div className="dark:bg-primary bg-white min-h-screen pb-10">
       <Container className="xl:px-0 px-2">
-        <img className="" src={newScr} alt=""></img>
+        {/* <img className="" src={newScr} alt=""></img> */}
+        <ReactPlayer height="" width="" className='real-ply' controls={true} light={newScr} url={trailer}  playing/>
         <div className="flex justify-between">
           <h1 className="xl:text-4xl lg:text-3xl text-2xl  text-highlight dark:text-highlight-dark font-semibold py-3">
             {title}
@@ -113,34 +117,7 @@ export default function SingleMovie() {
 
         <div className="space-y-3">
           <p className="text-light-subtle dark:text-dark-subtle">{overview}</p>
-          {/* <ListWithLabel label="Director:">
-            <CustomButtonLink
-              onClick={() => handleProfileClick(director)}
-              label={director.name}
-            />
-          </ListWithLabel>
 
-          <ListWithLabel label="Writers:">
-            {writers.map((w) => (
-              <CustomButtonLink
-                onClick={() => handleProfileClick(w)}
-                key={w.id}
-                label={w.name}
-              />
-            ))}
-          </ListWithLabel>
-
-          <ListWithLabel label="Lead Actor:">
-            {cast.map(({ id, profile, leadActor }) => {
-              return leadActor ? (
-                <CustomButtonLink
-                  onClick={() => handleProfileClick(profile)}
-                  label={profile.name}
-                  key={id}
-                />
-              ) : null;
-            })}
-          </ListWithLabel> */}
 
           <ListWithLabel label="Language:">
             <CustomButtonLink label={original_language} clickable={false} />
@@ -160,14 +137,9 @@ export default function SingleMovie() {
           </ListWithLabel>
 
           <RelatedMovies movieId={movieId} />
+          <TopRatedTVSeries movieId={movieId} />
         </div>
       </Container>
-
-      {/* <ProfileModal
-        visible={showProfileModal}
-        onClose={hideProfileModal}
-        profileId={selectedProfile.id}
-      /> */}
 
       <AddRatingModal
         visible={showRatingModal}
@@ -190,36 +162,3 @@ const ListWithLabel = ({ children, label }) => {
   );
 };
 
-// const CastProfiles = ({ cast, onProfileClick }) => {
-//   return (
-//     <div className="">
-//       <h1 className="text-light-subtle dark:text-dark-subtle font-semibold text-2xl mb-2">
-//         Cast:
-//       </h1>
-//       <div className="flex flex-wrap space-x-4">
-//         {cast.map(({ id, profile, roleAs }) => {
-//           return (
-//             <div
-//               key={id}
-//               className="basis-28 flex flex-col items-center text-center mb-4"
-//             >
-//               <img
-//                 className="w-24 h-24 aspect-square object-cover rounded-full"
-//                 src={profile.avatar}
-//                 alt=""
-//               />
-
-//               <CustomButtonLink label={profile.name} />
-//               <span className="text-light-subtle dark:text-dark-subtle text-sm">
-//                 as
-//               </span>
-//               <p className="text-light-subtle dark:text-dark-subtle">
-//                 {roleAs}
-//               </p>
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </div>
-//   );
-// };

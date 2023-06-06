@@ -1,5 +1,5 @@
 import React from "react";
-import { AiFillStar } from "react-icons/ai";
+import { FaRadiation } from "react-icons/fa";
 import { Link } from "react-router-dom";
 // import { getPoster } from "../../utils/helper";
 import GridContainer from "../GridContainer";
@@ -55,7 +55,7 @@ const ListItem = ({ movie }) => {
         {reviews?.ratingAvg ? (
           <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
             <span>{reviews?.ratingAvg}</span>
-            <AiFillStar />
+            <FaRadiation />
           </p>
         ) : (
           <p className="text-highlight dark:text-highlight-dark">No reviews</p>
@@ -86,7 +86,7 @@ const ListItem = ({ movie }) => {
       {reviews?.ratingAvg ? (
         <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
           <span>{reviews?.ratingAvg}</span>
-          <AiFillStar />
+          <FaRadiation />
         </p>
       ) : (
         <p className="text-highlight dark:text-highlight-dark">No reviews</p>

@@ -152,6 +152,8 @@ exports.getSingleMovie = async (req, res) => {
         original_language,
         backdrop_path,
         trailer: "https://www.youtube.com/embed/" + videos.results[0].key,
+        trailer2: "https://www.youtube.com/embed/" + videos.results[1].key,
+        trailer3: "https://www.youtube.com/embed/" + videos.results[2].key,
         reviews: { ...reviews },
       },
     })} else if (!movieReview) {

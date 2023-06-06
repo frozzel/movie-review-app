@@ -1,8 +1,9 @@
 import React from "react";
-import { FaRadiation } from "react-icons/fa";
+// import { FaRadiation } from "react-icons/fa";
 import { Link } from "react-router-dom";
 // import { getPoster } from "../../utils/helper";
 import GridContainer from "../GridContainer";
+import RatingStar from "../RatingStar";
 
 const trimTitle = (text = "") => {
   if (text.length <= 20) return text;
@@ -52,14 +53,15 @@ const ListItem = ({ movie }) => {
         >
           {trimTitle(name)}
         </h1>
-        {reviews?.ratingAvg ? (
+        <RatingStar rating={reviews?.ratingAvg} />
+        {/* {reviews?.ratingAvg ? (
           <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
             <span>{reviews?.ratingAvg}</span>
             <FaRadiation />
           </p>
         ) : (
-          <p className="text-highlight dark:text-highlight-dark">No reviews</p>
-        )}
+          <p className="text-good ">No reviews</p>
+        )} */}
       </Link>
     );
   } else  if (backdrop_path){
@@ -83,14 +85,15 @@ const ListItem = ({ movie }) => {
       >
         {trimTitle(name)}
       </h1>
-      {reviews?.ratingAvg ? (
+      <RatingStar rating={reviews?.ratingAvg} />
+      {/* {reviews?.ratingAvg ? (
         <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
           <span>{reviews?.ratingAvg}</span>
           <FaRadiation />
         </p>
       ) : (
         <p className="text-highlight dark:text-highlight-dark">No reviews</p>
-      )}
+      )} */}
     </Link>
   );}
 };

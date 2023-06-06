@@ -26,7 +26,7 @@ let chartStyle = {};
 const w = window.innerWidth;
 if (w < 768) {
   chartStyle = {
-    width: '120px',
+    width: '150px',
     
   };
 } else {
@@ -101,7 +101,7 @@ export default function SingleMovie() {
 
   let imgCheck = false;
   const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
-  if (reviews.ratingAvg > 0) imgCheck = true;
+  if (reviews.ratingAvg > 1) imgCheck = true;
   
   return (
     <div className="dark:bg-primary bg-white min-h-screen pb-10">
@@ -110,7 +110,7 @@ export default function SingleMovie() {
         <div className="md:w-4/5 w-full aspect-video relative overflow-hidden">
               {newScr ? ( <img className="" src={newScr} alt=""></img>
               ) : null}
-              {imgCheck ?  (<img src="./logo.png" alt="logo" className="absolute  inset-3 flex flex-col items-end w-16 md:w-32 lg:w-48" />): null}
+              {imgCheck ?  (<img src="./logo.png" alt="logo" className="absolute top-4 right-4  flex flex-col w-16 md:w-32 lg:w-48" />): null}
               {title ? (
               <div className="absolute inset-0 flex flex-col justify-end py-0 md:py-2 lg:py-3 bg-gradient-to-t from-white via-transparent dark:from-primary dark:via-transparent">
                 <h1 className="font-semibold text-lg md:text-2xl lg:text-4xl dark:text-highlight-dark text-highlight"> 
@@ -135,7 +135,7 @@ export default function SingleMovie() {
               nrOfLevels={20}
               arcsLength={[0.1, 0.6, 0.3]}
               colors={['#5BE12C', '#F5CD19', '#DC143C']}
-              percent={reviews.ratingAvg/10}
+              percent={reviews.ratingAvg/10? reviews.ratingAvg/10 : 0.01}
               arcPadding={0.02}
             />
         </div>
@@ -143,10 +143,12 @@ export default function SingleMovie() {
           <div className="flex flex-col items-end">
             <RatingStar rating={reviews.ratingAvg} />
             <CustomButtonLink
+              rating={reviews.ratingAvg}
               label={convertReviewCount(reviews.reviewCount) + " Reviews"}
               onClick={() => navigate("/movie/reviews/" + id)}
             />
             <CustomButtonLink
+              rating={reviews.ratingAvg}
               label="Rate the movie"
               onClick={handleOnRateMovie}
             />
@@ -158,11 +160,12 @@ export default function SingleMovie() {
 
 
           <ListWithLabel label="Language:">
-            <CustomButtonLink label={original_language} clickable={false} />
+            <CustomButtonLink label={original_language} clickable={false} rating={null}/>
           </ListWithLabel>
 
           <ListWithLabel label="Release Date:">
             <CustomButtonLink
+              rating={null}
               label={convertDate(release_date)}
               clickable={false}
             />
@@ -170,7 +173,7 @@ export default function SingleMovie() {
 
           <ListWithLabel label="Genres:">
             {genres.map((g) => (
-              <CustomButtonLink label={g} key={g} clickable={false} />
+              <CustomButtonLink label={g} key={g} clickable={false} rating={null}/>
             ))}
           </ListWithLabel>
 

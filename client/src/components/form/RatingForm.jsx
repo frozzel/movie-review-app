@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AiOutlineStar, AiFillStar } from "react-icons/ai";
+import { FaSquare, FaRegSquare } from "react-icons/fa";
 import Submit from "./Submit";
 
 const ratings = new Array(10).fill("");
@@ -54,7 +54,7 @@ export default function RatingForm({ busy, onSubmit }) {
 const StarsOutlined = ({ ratings, onMouseEnter }) => {
   return ratings.map((_, index) => {
     return (
-      <AiOutlineStar
+      <FaRegSquare
         onMouseEnter={() => onMouseEnter(index)}
         className="cursor-pointer"
         key={index}
@@ -67,7 +67,7 @@ const StarsOutlined = ({ ratings, onMouseEnter }) => {
 const StarsFilled = ({ ratings, onMouseEnter }) => {
   return ratings.map((_, index) => {
     return (
-      <AiFillStar
+      <FaSquare
         onMouseEnter={() => onMouseEnter(index)}
         className="cursor-pointer"
         key={index}

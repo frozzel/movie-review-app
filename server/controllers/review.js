@@ -8,7 +8,12 @@ const { getAverageRatings } = require("../utils/helper");
 
 exports.addReview = async (req, res) => {
   const { movieId } = req.params;
-  const { content, rating } = req.body;
+  const { content, rating, CRT,
+    LGBTQ_content,
+    trans_content,
+    anti_religion,
+    globalWarming,
+    leftWing } = req.body;
   const userId = req.user._id;
   const movie = await Movie.findOne({ TMDB_Id: movieId });
 
@@ -33,6 +38,13 @@ exports.addReview = async (req, res) => {
     parentMovie: movie._id,
     content,
     rating,
+    CRT,
+    LGBTQ_content,
+    trans_content,
+    anti_religion,
+    globalWarming,
+    leftWing
+
   });
 
   // updating review for movie.
@@ -50,7 +62,7 @@ exports.addReview = async (req, res) => {
 
 exports.updateReview = async (req, res) => {
     const { reviewId } = req.params;
-    const { content, rating } = req.body;
+    const { content, rating, CRT, LGBTQ_content, trans_content, anti_religion, globalWarming, leftWing} = req.body;
     const userId = req.user._id;
   
     if (!isValidObjectId(reviewId)) return sendError(res, "Invalid Review ID!");
@@ -60,13 +72,19 @@ exports.updateReview = async (req, res) => {
   
     review.content = content;
     review.rating = rating;
-  
+    review.CRT = CRT;
+    review.LGBTQ_content = LGBTQ_content;
+    review.trans_content= trans_content;
+    review.anti_religion = anti_religion;
+    review.globalWarming = globalWarming;
+    review.leftWing = leftWing;
+
     await review.save();
   
     res.json({ message: "Your review has been updated." });
   };
 
-  exports.removeReview = async (req, res) => {
+exports.removeReview = async (req, res) => {
   const { reviewId } = req.params;
   const userId = req.user._id;
 
@@ -83,7 +101,7 @@ exports.updateReview = async (req, res) => {
   await movie.save();
 
   res.json({ message: "Review removed successfully." });
-};
+  };
 
 exports.getReviewsByMovie = async (req, res) => {
   const { movieId } = req.params;
@@ -97,6 +115,7 @@ exports.getReviewsByMovie = async (req, res) => {
         path: "owner",
         select: "name",
       },
+      
     })
     .select("reviews title");
 
@@ -118,6 +137,6 @@ exports.getReviewsByMovie = async (req, res) => {
       rating,
     };
   });
-
+  
   res.json({ movie: { reviews, title: movie.title } });
 };

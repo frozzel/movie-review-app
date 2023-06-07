@@ -21,6 +21,12 @@ export default function RatingForm({ busy, onSubmit }) {
     const data = {
       rating: selectedRatings.length,
       content,
+      CRT: document.getElementById("CRT").checked,
+      LGBTQ_content: document.getElementById("LGBTQ_content").checked,
+      trans_content: document.getElementById("trans_content").checked,
+      anti_religion: document.getElementById("anti_religion").checked,
+      globalWarming: document.getElementById("globalWarming").checked,
+      leftWing: document.getElementById("leftWing").checked
     };
 
     onSubmit(data);
@@ -29,6 +35,34 @@ export default function RatingForm({ busy, onSubmit }) {
   return (
     <div>
       <div className="p-5 dark:bg-primary bg-white rounded space-y-3">
+        <h1 className="dark:text-white text-secondary font-semibold text-lg">
+        Woke Alerts:</h1>
+            <div className="text-highlight dark:text-highlight-dark flex "> 
+              <input type="checkbox" id="CRT" name="CRT" value="true" className="mr-2" />
+              <label htmlFor="CRT">CRT Related Material</label>
+            </div>
+            <div className="text-highlight dark:text-highlight-dark flex "> 
+              <input type="checkbox" id="LGBTQ_content" name="LGBTQ_content" value="true" className="mr-2"/>
+              <label htmlFor="LGBTQ_content">LGBTQ Content</label>
+            </div>
+            <div className="text-highlight dark:text-highlight-dark flex "> 
+              <input type="checkbox" id="trans_content" name="trans_content" value="true" className="mr-2"/>
+              <label htmlFor="trans_content">Trans/Queer Theory</label>
+            </div>
+            <div className="text-highlight dark:text-highlight-dark flex "> 
+              <input type="checkbox" id="anti_religion" name="anti_religion" value="true" className="mr-2"/>
+              <label htmlFor="anti_religion">Anti Religious Sentiment</label>
+            </div>
+            <div className="text-highlight dark:text-highlight-dark flex "> 
+              <input type="checkbox" id="globalWarming" name="globalWarming" value="true" className="mr-2"/>
+              <label htmlFor="globalWarming">Climate Change Activism</label>
+            </div>
+            <div className="text-highlight dark:text-highlight-dark flex "> 
+              <input type="checkbox" id="leftWing" name="leftWing" value="true" className="mr-2"/>
+              <label htmlFor="leftWing">Left Wing Propaganda</label>
+            </div>
+        <h1 className="dark:text-white text-secondary font-semibold text-lg ">
+        Woke Meter:</h1>
         <div className="text-highlight dark:text-highlight-dark flex items-center relative">
           <StarsOutlined ratings={ratings} onMouseEnter={handleMouseEnter} />
           <div className="flex items-center absolute top-1/2 -translate-y-1/2">

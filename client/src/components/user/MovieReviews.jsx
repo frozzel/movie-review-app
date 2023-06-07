@@ -49,7 +49,7 @@ export default function MovieReviews() {
   };
 
   const handleOnEditClick = () => {
-    const { id, content, rating } = profileOwnersReview;
+    const { id, content, rating} = profileOwnersReview;
     setSelectedReview({
       id,
       content,

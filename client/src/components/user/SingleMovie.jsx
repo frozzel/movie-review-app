@@ -10,7 +10,9 @@ import RelatedMovies from "../RelatedMovies";
 import MovieReviews from "./MovieReviews";
 import ReactPlayer from 'react-player'
 import TopRatedTVSeries from "./TopRatedTVSeries";
-import GaugeChart from 'react-gauge-chart'
+import GaugeChart from 'react-gauge-chart';
+import { BsFillCheckSquareFill, BsSquare } from "react-icons/bs";
+
 
 
 const convertReviewCount = (count = 0) => {
@@ -126,6 +128,7 @@ export default function SingleMovie() {
               <ReactPlayer height="" width="" className='aspect-video object-cover rounded' controls={true} light={true} url={trailer}  playing/>
               <ReactPlayer height="" width="" className='aspect-video object-cover rounded' controls={true} light={true} url={trailer2}  playing/>
               <ReactPlayer height="" width="" className='aspect-video object-cover rounded' controls={true} light={true} url={trailer3}  playing/>
+              
           </div>
         </div>  
 
@@ -139,8 +142,18 @@ export default function SingleMovie() {
               arcPadding={0.02}
             />
         </div>
-    
+        <div className=" flex-col sm:block hidden">
+        <ListWithLabel2 label="CRT Related Material" children={reviews.CRT}></ListWithLabel2>
+        <ListWithLabel2 label="LGBTQ Content" children={reviews.LGBTQ_content}></ListWithLabel2>
+        <ListWithLabel2 label="Trans/Queer Theory" children={reviews.trans_content}></ListWithLabel2>
+        </div>
+        <div className=" flex-col sm:block hidden">
+        <ListWithLabel2 label="Anti Religious Sentiment" children={reviews.anti_religion}></ListWithLabel2>
+        <ListWithLabel2 label="Climate Change Activism" children={reviews.globalWarming}></ListWithLabel2>
+        <ListWithLabel2 label="Left Wing Propaganda" children={reviews.leftWing}></ListWithLabel2>
+        </div>
           <div className="flex flex-col items-end">
+
             <RatingStar rating={reviews.ratingAvg} />
             <CustomButtonLink
               rating={reviews.ratingAvg}
@@ -154,6 +167,20 @@ export default function SingleMovie() {
             />
           </div>
         </div>
+        <div className="flex justify-between">
+
+        </div>
+        <div className=" flex-col sm:flex  lg:hidden md:hidden ">
+        <ListWithLabel2 label="CRT Related Material" children={reviews.CRT}></ListWithLabel2>
+        <ListWithLabel2 label="LGBTQ Content" children={reviews.LGBTQ_content}></ListWithLabel2>
+        <ListWithLabel2 label="Trans/Queer Theory" children={reviews.trans_content}></ListWithLabel2>
+        </div>
+        <div className="  flex-col sm:flex  lg:hidden md:hidden pb-3">
+        <ListWithLabel2 label="Anti Religious Sentiment" children={reviews.anti_religion}></ListWithLabel2>
+        <ListWithLabel2 label="Climate Change Activism" children={reviews.globalWarming}></ListWithLabel2>
+        <ListWithLabel2 label="Left Wing Propaganda" children={reviews.leftWing}></ListWithLabel2>
+        </div>
+        
 
         <div className="space-y-3">
           <p className="text-light-subtle dark:text-dark-subtle">{overview}</p>
@@ -202,4 +229,22 @@ const ListWithLabel = ({ children, label }) => {
     </div>
   );
 };
+const ListWithLabel2 = ({ children, label }) => {
+  if (children === null) return null;
+  if (children === undefined) return null;
+  if (children > .01){
+    return (
+      <div className="flex space-x-2">
+        <h1 className="text-light-subtle dark:text-dark-subtle font-semibold flex items-center space-x-1 mr-1 ">
+        <BsFillCheckSquareFill /><span>{label}</span></h1>
+      </div>
+    )
+  }
+  return (
+    <div className="flex space-x-2">
+      <h1 className="text-light-subtle dark:text-dark-subtle font-semibold flex items-center space-x-1 mr-1 ">
+      <BsSquare /><span>{label}</span></h1>
+    </div>
+  )
 
+}

@@ -115,20 +115,28 @@ exports.getSingleMovie = async (req, res) => {
     // const data = await response.json();
     
     const movieReview = await Movie.findOne({ TMDB_Id: movieId });
+    
     if(movieReview) {
       const [aggregatedResponse] = await Review.aggregate(
         averageRatingPipeline(movieReview._id)
       );
-  
+      
       const reviews = {};
       if(!aggregatedResponse)return null;
       if (aggregatedResponse) {
-        const { ratingAvg, reviewCount } = aggregatedResponse;
+        const { ratingAvg, reviewCount, CRT, LGBTQ_content, trans_content, anti_religion, globalWarming, leftWing} = aggregatedResponse;
         reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
         reviews.reviewCount = reviewCount;
+        reviews.CRT = CRT;
+        reviews.LGBTQ_content = LGBTQ_content;
+        reviews.trans_content = trans_content;
+        reviews.anti_religion = anti_religion;
+        reviews.globalWarming = globalWarming;
+        reviews.leftWing = leftWing;
+        
       }
       
-    
+        
     const {
       id,
       title,
@@ -137,8 +145,13 @@ exports.getSingleMovie = async (req, res) => {
       genres,
       original_language,
       backdrop_path,
-      videos
-      
+      videos,
+      CRT,
+      LGBTQ_content,
+      trans_content,
+      anti_religion,
+      globalWarming,
+      leftWing
       
     } = movie;
 
@@ -155,6 +168,13 @@ exports.getSingleMovie = async (req, res) => {
         trailer2: "https://www.youtube.com/embed/" + videos.results[1].key,
         trailer3: "https://www.youtube.com/embed/" + videos.results[2].key,
         reviews: { ...reviews },
+        CRT,
+        LGBTQ_content,
+        trans_content,
+        anti_religion,
+        globalWarming,
+        leftWing
+        
       },
     })} else if (!movieReview) {
       const [aggregatedResponse] = await Review.aggregate(
@@ -192,6 +212,9 @@ exports.getSingleMovie = async (req, res) => {
           original_language,
           backdrop_path,
           trailer: "https://www.youtube.com/embed/" + videos.results[0].key,
+          trailer: "https://www.youtube.com/embed/" + videos.results[0].key,
+          trailer2: "https://www.youtube.com/embed/" + videos.results[1].key,
+          trailer3: "https://www.youtube.com/embed/" + videos.results[2].key,
           reviews: { ...reviews },
         },
       });

@@ -75,6 +75,36 @@ exports.averageRatingPipeline = (movieId) => {
         reviewCount: {
           $sum: 1,
         },
+        CRT: {
+          $sum: {
+            $cond: [{ $eq: ["$CRT", true] }, 1, 0],
+          },
+        },
+        LGBTQ_content: {
+          $sum: {
+            $cond: [{ $eq: ["$LGBTQ_content", true] }, 1, 0],
+          },
+        },
+        trans_content: {  
+          $sum: {
+            $cond: [{ $eq: ["$trans_content", true] }, 1, 0],
+          },
+        },
+        anti_religion: {
+          $sum: {
+            $cond: [{ $eq: ["$anti_religion", true] }, 1, 0],
+          },
+        },
+        globalWarming: {
+          $sum: {
+            $cond: [{ $eq: ["$globalWarming", true] }, 1, 0],
+          },
+        },
+        leftWing: {
+          $sum: {
+            $cond: [{ $eq: ["$leftWing", true] }, 1, 0],
+          },
+        },
       },
     },
   ];

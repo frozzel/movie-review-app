@@ -20,6 +20,30 @@ const reviewSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  CRT: {  
+    type: Boolean,
+    default: false,
+  },
+  LGBTQ_content: {
+    type: Boolean,
+    default: false,
+  },
+  trans_content: {
+    type: Boolean,
+    default: false,
+  },
+  anti_religion: {
+    type: Boolean,
+    default: false,
+  },
+  globalWarming: {
+    type: Boolean,
+    default: false,
+  },
+  leftWing: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("Review", reviewSchema);

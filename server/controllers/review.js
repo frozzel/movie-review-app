@@ -94,8 +94,9 @@ exports.removeReview = async (req, res) => {
   if (!review) return sendError(res, "Invalid request, review not found!");
 
   const movie = await Movie.findById(review.parentMovie).select("reviews");
+  console.log(movie.reviews);
   movie.reviews = movie.reviews.filter((rId) => rId.toString() !== reviewId);
-
+  console.log(movie.reviews);
   await Review.findByIdAndDelete(reviewId);
 
   await movie.save();
@@ -124,7 +125,12 @@ exports.getReviewsByMovie = async (req, res) => {
     
 
   const reviews = movie.reviews.map((r) => {
-    const { owner, content, rating, _id: reviewID } = r;
+    const { owner, content, rating, CRT,
+      LGBTQ_content,
+      trans_content,
+      anti_religion,
+      globalWarming,
+      leftWing, _id: reviewID } = r;
     const { name, _id: ownerId } = owner;
 
     return {
@@ -135,6 +141,12 @@ exports.getReviewsByMovie = async (req, res) => {
       },
       content,
       rating,
+      CRT,
+      LGBTQ_content,
+      trans_content,
+      anti_religion,
+      globalWarming,
+      leftWing
     };
   });
   

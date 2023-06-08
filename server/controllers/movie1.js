@@ -112,11 +112,10 @@ exports.getSingleMovie = async (req, res) => {
     const response = await fetch(url, options)
  
     const movie = await response.json();
-    // const data = await response.json();
     
     const movieReview = await Movie.findOne({ TMDB_Id: movieId });
     
-    if(movieReview) {
+    if(movieReview && movieReview.reviews.length > 0) {
       const [aggregatedResponse] = await Review.aggregate(
         averageRatingPipeline(movieReview._id)
       );
@@ -134,9 +133,9 @@ exports.getSingleMovie = async (req, res) => {
         reviews.globalWarming = globalWarming;
         reviews.leftWing = leftWing;
         
-      }
+      } 
       
-        
+    
     const {
       id,
       title,
@@ -154,7 +153,19 @@ exports.getSingleMovie = async (req, res) => {
       leftWing
       
     } = movie;
-
+    if (videos.results.length === 0) {
+      trailer = null
+      trailer2 = null
+      trailer3 = null
+    } else if (videos.results.length === 1) {
+      trailer= "https://www.youtube.com/embed/" + videos.results[0].key
+      trailer2 = null
+      trailer3 = null
+    } else {
+      trailer = "https://www.youtube.com/embed/" + videos.results[0].key
+      trailer2 = "https://www.youtube.com/embed/" + videos.results[1].key
+      trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+    }
     res.json({
       movie: {
         id,
@@ -164,9 +175,9 @@ exports.getSingleMovie = async (req, res) => {
         genres: genres.map((g) => g.name),
         original_language,
         backdrop_path,
-        trailer: "https://www.youtube.com/embed/" + videos.results[0].key,
-        trailer2: "https://www.youtube.com/embed/" + videos.results[1].key,
-        trailer3: "https://www.youtube.com/embed/" + videos.results[2].key,
+        trailer: trailer,
+        trailer2: trailer2,
+        trailer3: trailer3,
         reviews: { ...reviews },
         CRT,
         LGBTQ_content,
@@ -176,18 +187,24 @@ exports.getSingleMovie = async (req, res) => {
         leftWing
         
       },
-    })} else if (!movieReview) {
-      const [aggregatedResponse] = await Review.aggregate(
-        averageRatingPipeline(movieId)
-      );
+    })} else if (!movieReview || movieReview.reviews.length === 0) {
+      // const [aggregatedResponse] = await Review.aggregate(
+      //   averageRatingPipeline(movieId)
+      // );
   
       const reviews = {};
       // if(!aggregatedResponse)return null;
-      if (aggregatedResponse) {
-        const { ratingAvg, reviewCount } = aggregatedResponse;
-        reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
-        reviews.reviewCount = reviewCount;
-      }
+      // if (aggregatedResponse) {
+      //   const { ratingAvg, reviewCount } = aggregatedResponse;
+      //   reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+      //   reviews.reviewCount = reviewCount;
+      //   reviews.CRT = CRT;
+      //   reviews.LGBTQ_content = LGBTQ_content;
+      //   reviews.trans_content = trans_content;
+      //   reviews.anti_religion = anti_religion;
+      //   reviews.globalWarming = globalWarming;
+      //   reviews.leftWing = leftWing;
+      // }
       
       const {
         id,
@@ -197,11 +214,32 @@ exports.getSingleMovie = async (req, res) => {
         genres,
         original_language,
         backdrop_path,
-        videos
+        videos,
+        CRT,
+        LGBTQ_content,
+        trans_content,
+        anti_religion,
+        globalWarming,
+        leftWing
         
         
       } = movie;
-      console.log(videos.results[0].key);
+      if (videos.results.length === 0) {
+        trailer = null
+        trailer2 = null
+        trailer3 = null
+      } else if (videos.results.length === 1) {
+        trailer= "https://www.youtube.com/embed/" + videos.results[0].key
+        trailer2 = null
+        trailer3 = null
+      } else {
+        trailer = "https://www.youtube.com/embed/" + videos.results[0].key
+        trailer2 = "https://www.youtube.com/embed/" + videos.results[1].key
+        trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+      }
+      console.log(trailer)
+      console.log(trailer2)
+      console.log(trailer3)
       res.json({
         movie: {
           id,
@@ -211,11 +249,16 @@ exports.getSingleMovie = async (req, res) => {
           genres: genres.map((g) => g.name),
           original_language,
           backdrop_path,
-          trailer: "https://www.youtube.com/embed/" + videos.results[0].key,
-          trailer: "https://www.youtube.com/embed/" + videos.results[0].key,
-          trailer2: "https://www.youtube.com/embed/" + videos.results[1].key,
-          trailer3: "https://www.youtube.com/embed/" + videos.results[2].key,
+          trailer: trailer,
+          trailer2: trailer2,
+          trailer3: trailer3,
           reviews: { ...reviews },
+          CRT,
+          LGBTQ_content,
+          trans_content,
+          anti_religion,
+          globalWarming,
+          leftWing
         },
       });
     }

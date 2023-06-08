@@ -71,6 +71,7 @@ export default function SingleMovie() {
 
 
   const handleOnRatingSuccess = (reviews) => {
+    console.log(reviews)
     setMovie({ ...movie, reviews: { ...reviews } });
   };
 
@@ -125,9 +126,16 @@ export default function SingleMovie() {
               <h1 className="font-semibold text-2xl text-primary dark:text-white">
                 Trailers
               </h1>
-              <ReactPlayer height="" width="" className='aspect-video object-cover rounded' controls={true} light={true} url={trailer}  playing/>
-              <ReactPlayer height="" width="" className='aspect-video object-cover rounded' controls={true} light={true} url={trailer2}  playing/>
-              <ReactPlayer height="" width="" className='aspect-video object-cover rounded' controls={true} light={true} url={trailer3}  playing/>
+              {trailer ? (  
+                  <ReactPlayer height="" width="" className='aspect-video object-cover rounded' controls={true} light={true} url={trailer}  playing/>
+              ) : null
+              }{trailer2 ? (
+                <ReactPlayer height="" width="" className='aspect-video object-cover rounded' controls={true} light={true} url={trailer2}  playing/>
+              ) : null
+                }{trailer3 ? (
+                  <ReactPlayer height="" width="" className='aspect-video object-cover rounded' controls={true} light={true} url={trailer3}  playing/>
+              ) : null
+                }
               
           </div>
         </div>  

@@ -109,7 +109,7 @@ export default function MovieReviews() {
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold dark:text-white text-secondary">
             <span className="text-light-subtle dark:text-dark-subtle font-normal">
-              Reviews for:
+              Reviews:
             </span>{" "}
             {movieTitle}
           </h1>

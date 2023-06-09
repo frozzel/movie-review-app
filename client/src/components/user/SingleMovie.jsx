@@ -71,13 +71,14 @@ export default function SingleMovie() {
 
 
   const handleOnRatingSuccess = (reviews) => {
-    console.log(reviews)
     setMovie({ ...movie, reviews: { ...reviews } });
   };
 
   useEffect(() => {
-    if (movieId) fetchMovie();
+    if (movieId) fetchMovie() 
   }, [movieId]);
+
+
 
   if (!ready)
     return (
@@ -150,17 +151,17 @@ export default function SingleMovie() {
               arcPadding={0.02}
             />
         </div>
-        <div className=" flex-col sm:block hidden">
+        <div className=" flex-col sm:block hidden mt-2">
         <ListWithLabel2 label="CRT Related Material" children={reviews.CRT}></ListWithLabel2>
         <ListWithLabel2 label="LGBTQ Content" children={reviews.LGBTQ_content}></ListWithLabel2>
         <ListWithLabel2 label="Trans/Queer Theory" children={reviews.trans_content}></ListWithLabel2>
         </div>
-        <div className=" flex-col sm:block hidden">
+        <div className=" flex-col sm:block hidden mt-2">
         <ListWithLabel2 label="Anti Religious Sentiment" children={reviews.anti_religion}></ListWithLabel2>
         <ListWithLabel2 label="Climate Change Activism" children={reviews.globalWarming}></ListWithLabel2>
         <ListWithLabel2 label="Left Wing Propaganda" children={reviews.leftWing}></ListWithLabel2>
         </div>
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end mt-2">
 
             <RatingStar rating={reviews.ratingAvg} />
             <CustomButtonLink

@@ -189,9 +189,16 @@ exports.getAverageRatings = async (movieId) => {
   const reviews = {};
 
   if (aggregatedResponse) {
-    const { ratingAvg, reviewCount } = aggregatedResponse;
+    const { ratingAvg, reviewCount, CRT, LGBTQ_content, trans_content, anti_religion, globalWarming, leftWing } = aggregatedResponse;
     reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
     reviews.reviewCount = reviewCount;
+    reviews.CRT = CRT;
+    reviews.LGBTQ_content = LGBTQ_content;
+    reviews.trans_content = trans_content;
+    reviews.anti_religion = anti_religion;
+    reviews.globalWarming = globalWarming;
+    reviews.leftWing = leftWing;
+
   }
 
   return reviews;
@@ -202,9 +209,16 @@ exports.getAverageRatings = async (movieId) => {
     const reviews = {};
     // if(!aggregatedResponse)return null;
     if (aggregatedResponse) {
-      const { ratingAvg, reviewCount } = aggregatedResponse;
+      const { ratingAvg, reviewCount, CRT, LGBTQ_content, trans_content, anti_religion, globalWarming, leftWing } = aggregatedResponse;
       reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
       reviews.reviewCount = reviewCount;
+      reviews.CRT = CRT;
+      reviews.LGBTQ_content = LGBTQ_content;
+      reviews.trans_content = trans_content
+      reviews.anti_religion = anti_religion;
+      reviews.globalWarming = globalWarming;
+      reviews.leftWing = leftWing;
+      
     }
     return reviews;
   }

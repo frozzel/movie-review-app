@@ -237,9 +237,6 @@ exports.getSingleMovie = async (req, res) => {
         trailer2 = "https://www.youtube.com/embed/" + videos.results[1].key
         trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
       }
-      console.log(trailer)
-      console.log(trailer2)
-      console.log(trailer3)
       res.json({
         movie: {
           id,
@@ -262,7 +259,7 @@ exports.getSingleMovie = async (req, res) => {
         },
       });
     }
-    // res.json(data);
+
     } catch (error) {
       console.log(error);
       return sendError(res, "Movie/TV id is not valid!"); 

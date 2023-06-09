@@ -54,14 +54,7 @@ const ListItem = ({ movie }) => {
           {trimTitle(name)}
         </h1>
         <RatingStar rating={reviews?.ratingAvg} />
-        {/* {reviews?.ratingAvg ? (
-          <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
-            <span>{reviews?.ratingAvg}</span>
-            <FaRadiation />
-          </p>
-        ) : (
-          <p className="text-good ">No reviews</p>
-        )} */}
+ 
       </Link>
     );
   } else  if (backdrop_path){
@@ -86,14 +79,7 @@ const ListItem = ({ movie }) => {
         {trimTitle(name)}
       </h1>
       <RatingStar rating={reviews?.ratingAvg} />
-      {/* {reviews?.ratingAvg ? (
-        <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
-          <span>{reviews?.ratingAvg}</span>
-          <FaRadiation />
-        </p>
-      ) : (
-        <p className="text-highlight dark:text-highlight-dark">No reviews</p>
-      )} */}
+   
     </Link>
   );}
 };

@@ -12,7 +12,7 @@ export default function AddRatingModal({ visible, onSuccess, onClose }) {
   const handleSubmit = async (data) => {
     const { error, message, reviews } = await addReview(movieId, data);
     if (error) return updateNotification("error", error);
-
+    
     updateNotification("success", message);
     onSuccess(reviews);
     onClose();

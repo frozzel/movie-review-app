@@ -12,6 +12,7 @@ import ReactPlayer from 'react-player'
 import TopRatedTVSeries from "./TopRatedTVSeries";
 import GaugeChart from 'react-gauge-chart';
 import { BsFillCheckSquareFill, BsSquare } from "react-icons/bs";
+import TMDB from "../TMDB";
 
 
 
@@ -224,6 +225,7 @@ export default function SingleMovie() {
         onSuccess={handleOnRatingSuccess}
       />
       <MovieReviews movieId={movieId} />
+      <TMDB />
     </div>
   );
 }

@@ -107,6 +107,26 @@ exports.removeReview = async (req, res) => {
 exports.getReviewsByMovie = async (req, res) => {
   const { movieId } = req.params;
 
+  const url = 'https://api.themoviedb.org/3/movie/' +movieId+ '?language=en-US&append_to_response=videos';
+  
+
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: process.env.TMDB_READ_TOKEN
+    }
+  };
+  try{
+    const response = await fetch(url, options)
+ 
+    const movieAPI = await response.json();
+    const movieTitle = movieAPI.title;
+  
+
+
+    
+
   // if (!isValidObjectId(movieId)) return sendError(res, "Invalid movie ID!");
   
   const movie = await Movie.findOne({ TMDB_Id: movieId })
@@ -150,5 +170,9 @@ exports.getReviewsByMovie = async (req, res) => {
     };
   });
   
-  res.json({ movie: { reviews, title: movie.title } });
+  res.json({ movie: { reviews, title: movieTitle } })}
+   catch (error) {
+    console.log(error);
+    return sendError(res, "Movie/TV id is not valid!"); 
+  }
 };

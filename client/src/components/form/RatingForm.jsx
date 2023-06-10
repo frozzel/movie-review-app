@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { FaSquare, FaRegSquare } from "react-icons/fa";
 import Submit from "./Submit";
 
-const ratings = new Array(10).fill("");
-export default function RatingForm({ busy, onSubmit }) {
+const createArray = (count) => {
+  return new Array(count).fill("");
+};
+
+const ratings = createArray(10);
+
+export default function RatingForm({ busy, initialState, onSubmit }) {
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [content, setContent] = useState("");
   const [CRT, setCRT] = useState(false);
@@ -12,6 +17,7 @@ export default function RatingForm({ busy, onSubmit }) {
   const [anti_religion, setAnti_religion] = useState(false);
   const [globalWarming, setGlobalWarming] = useState(false);
   const [leftWing, setLeftWing] = useState(false);
+  
 
 
   const handleMouseEnter = (index) => {
@@ -61,16 +67,30 @@ export default function RatingForm({ busy, onSubmit }) {
       rating: selectedRatings.length,
       content,
       CRT,
-      // CRT: document.getElementById("CRT").checked,
       LGBTQ_content,
-      trans_content: document.getElementById("trans_content").checked,
-      anti_religion: document.getElementById("anti_religion").checked,
-      globalWarming: document.getElementById("globalWarming").checked,
-      leftWing: document.getElementById("leftWing").checked
+      trans_content,
+      anti_religion,
+      globalWarming,
+      leftWing,
+
     };
 
     onSubmit(data);
   };
+
+  useEffect(() => {
+  if (initialState) {
+    setContent(initialState.content);
+    setSelectedRatings(createArray(initialState.rating));
+    setCRT(initialState.CRT);
+    setLGBTQ_content(initialState.LGBTQ_content);
+    setAnti_religion(initialState.anti_religion);
+    setGlobalWarming(initialState.globalWarming);
+    setLeftWing(initialState.leftWing);
+    setTrans_content(initialState.trans_content)
+
+  }
+}, [initialState]);
 
   return (
     <div>
@@ -83,19 +103,7 @@ export default function RatingForm({ busy, onSubmit }) {
             <Checkbox label="Anti Religious Sentiment" prop="anti_religion" checked={anti_religion} onChange={handleOnChangeAnti_religion} />
             <Checkbox label="Climate Change Activism" prop="globalWarming" checked={globalWarming} onChange={handleOnChangeGlobalWarming} />
             <Checkbox label="Left Wing Propaganda" prop="leftWing" checked={leftWing} onChange={handleOnChangeLeftWing} />
-{/* 
-            <div className="text-highlight dark:text-highlight-dark flex "> 
-              <input type="checkbox" id="anti_religion" name="anti_religion" value="true" className="mr-2"/>
-              <label htmlFor="anti_religion">Anti Religious Sentiment</label>
-            </div>
-            <div className="text-highlight dark:text-highlight-dark flex "> 
-              <input type="checkbox" id="globalWarming" name="globalWarming" value="true" className="mr-2"/>
-              <label htmlFor="globalWarming">Climate Change Activism</label>
-            </div>
-            <div className="text-highlight dark:text-highlight-dark flex "> 
-              <input type="checkbox" id="leftWing" name="leftWing" value="true" className="mr-2"/>
-              <label htmlFor="leftWing">Left Wing Propaganda</label>
-            </div> */}
+
         <h1 className="dark:text-white text-secondary font-semibold text-lg ">
         Woke Meter:</h1>
         <div className="text-highlight dark:text-highlight-dark flex items-center relative">
@@ -146,12 +154,10 @@ const StarsFilled = ({ ratings, onMouseEnter }) => {
   });
 };
 const Checkbox = ({ label, checked, onChange, prop }) => {
-  // if (checked) checked= true;
-  // else checked = false;
-
+  
   return (
     <div className="text-highlight dark:text-highlight-dark flex "> 
-      <input onChange={onChange} type="checkbox" id={prop} name={prop} value={checked ? "true": "false"} className="mr-2" />
+      <input onChange={onChange} type="checkbox" id={prop} name={prop} value={checked ? true: false} className="mr-2" />
       <label htmlFor={prop}>{label}</label>
     </div>
   );

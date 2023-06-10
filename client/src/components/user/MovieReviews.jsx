@@ -44,21 +44,23 @@ export default function MovieReviews() {
     const matched = reviews.find((review) => review.owner.id === profileId);
     if (!matched)
       return updateNotification("error", "You don't have any review!");
-
+    
     setProfileOwnersReview(matched);
   };
 
   const handleOnEditClick = () => {
     const { id, content, rating} = profileOwnersReview;
+    
     setSelectedReview({
       id,
       content,
-      rating,
-    });
+      rating
 
+    });
+    
     setShowEditModal(true);
   };
-
+  
   const handleDeleteConfirm = async () => {
     setBusy(true);
     const { error, message } = await deleteReview(profileOwnersReview.id);
@@ -80,6 +82,7 @@ export default function MovieReviews() {
       ...profileOwnersReview,
       rating: review.rating,
       content: review.content,
+      CRT: review.CRT,
     };
 
     setProfileOwnersReview({ ...updatedReview });
@@ -104,12 +107,12 @@ export default function MovieReviews() {
   }, [movieId]);
 
   return (
-    <div className="dark:bg-primary bg-white min-h-screen pb-10">
+    <div className="dark:bg-primary bg-white  pb-10">
       <Container className="xl:px-0 px-2 py-8">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold dark:text-white text-secondary">
             <span className="text-light-subtle dark:text-dark-subtle font-normal">
-              Reviews:
+              Reviews for: 
             </span>{" "}
             {movieTitle}
           </h1>

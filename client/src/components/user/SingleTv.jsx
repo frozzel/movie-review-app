@@ -9,6 +9,7 @@ import AddRatingModal from "../models/AddRatingModal";
 import RatingStar from "../RatingStar";
 import SimilarTv from "./SimilarTv";
 import MovieReviews from "./MovieReviews";
+import TMDB from "../TMDB";
 
 const convertReviewCount = (count = 0) => {
   if (count <= 999) return count;
@@ -163,11 +164,7 @@ export default function SingleTv() {
         </div>
       </Container>
 
-      {/* <ProfileModal
-        visible={showProfileModal}
-        onClose={hideProfileModal}
-        profileId={selectedProfile.id}
-      /> */}
+    
 
       <AddRatingModal
         visible={showRatingModal}
@@ -175,6 +172,7 @@ export default function SingleTv() {
         onSuccess={handleOnRatingSuccess}
       />
       <MovieReviews movieId={movieId} />
+      <TMDB />
     </div>
   );
 }
@@ -190,36 +188,4 @@ const ListWithLabel = ({ children, label }) => {
   );
 };
 
-// const CastProfiles = ({ cast, onProfileClick }) => {
-//   return (
-//     <div className="">
-//       <h1 className="text-light-subtle dark:text-dark-subtle font-semibold text-2xl mb-2">
-//         Cast:
-//       </h1>
-//       <div className="flex flex-wrap space-x-4">
-//         {cast.map(({ id, profile, roleAs }) => {
-//           return (
-//             <div
-//               key={id}
-//               className="basis-28 flex flex-col items-center text-center mb-4"
-//             >
-//               <img
-//                 className="w-24 h-24 aspect-square object-cover rounded-full"
-//                 src={profile.avatar}
-//                 alt=""
-//               />
 
-//               <CustomButtonLink label={profile.name} />
-//               <span className="text-light-subtle dark:text-dark-subtle text-sm">
-//                 as
-//               </span>
-//               <p className="text-light-subtle dark:text-dark-subtle">
-//                 {roleAs}
-//               </p>
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </div>
-//   );
-// };

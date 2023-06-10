@@ -5,6 +5,7 @@ import NotVerified from "./user/NotVerified";
 import TopRatedMovies from "./user/TopRatedMovies";
 import TopRatedTVSeries from "./user/TopRatedTVSeries";
 import TopRatedWebSeries from "./user/TopRatedWebSeries";
+import TMDB from "./TMDB";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
           <TopRatedTVSeries />
           <TopRatedWebSeries />
         </div>
+        <TMDB />
       </Container>
     </div>
   );

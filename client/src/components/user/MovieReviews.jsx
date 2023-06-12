@@ -27,7 +27,7 @@ export default function MovieReviews() {
   const { movieId } = useParams();
   const { authInfo } = useAuth();
   const profileId = authInfo.profile?.id;
-
+  
   const { updateNotification } = useNotification();
 
   const fetchReviews = async () => {
@@ -54,8 +54,7 @@ export default function MovieReviews() {
     setSelectedReview({
       id,
       content,
-      rating
-
+      rating,
     });
     
     setShowEditModal(true);
@@ -82,7 +81,7 @@ export default function MovieReviews() {
       ...profileOwnersReview,
       rating: review.rating,
       content: review.content,
-      CRT: review.CRT,
+      // CRT: review.CRT,
     };
 
     setProfileOwnersReview({ ...updatedReview });

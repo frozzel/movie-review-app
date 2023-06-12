@@ -13,14 +13,15 @@ exports.addReview = async (req, res) => {
     trans_content,
     anti_religion,
     globalWarming,
-    leftWing } = req.body;
+    leftWing, 
+    title, IMDB } = req.body;
   const userId = req.user._id;
   const movie = await Movie.findOne({ TMDB_Id: movieId });
 
   if (!req.user.isVerified) return sendError(res, "Please verify you email first!");
 
   if(!movie){
-    const newMovie = new Movie({TMDB_Id: movieId});
+    const newMovie = new Movie({TMDB_Id: movieId, title: title, IMDB: IMDB});
   
     await newMovie.save();
   } else if(movie) {
@@ -43,7 +44,8 @@ exports.addReview = async (req, res) => {
     trans_content,
     anti_religion,
     globalWarming,
-    leftWing
+    leftWing,
+    
 
   });
 

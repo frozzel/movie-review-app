@@ -25,7 +25,7 @@ const movieSchema = mongoose.Schema({
         required: false,
         // enum: ['public', 'private']
     },
-    type: {
+    IMDB: {
         type: String,
         required: false,
         

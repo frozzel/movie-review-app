@@ -98,7 +98,7 @@ exports.getPopularMovies = async (req, res) => {
 exports.getSingleMovie = async (req, res) => {
   const {movieId} = req.params;
   
-  const url = 'https://api.themoviedb.org/3/movie/' +movieId+ '?language=en-US&append_to_response=videos';
+  const url = 'https://api.themoviedb.org/3/movie/' +movieId+ '?language=en-US&append_to_response=videos,external_ids';
   
 
   const options = {
@@ -145,6 +145,7 @@ exports.getSingleMovie = async (req, res) => {
       original_language,
       backdrop_path,
       videos,
+      external_ids,
       CRT,
       LGBTQ_content,
       trans_content,
@@ -178,6 +179,7 @@ exports.getSingleMovie = async (req, res) => {
         trailer: trailer,
         trailer2: trailer2,
         trailer3: trailer3,
+        IMDB: external_ids.imdb_id, 
         reviews: { ...reviews },
         CRT,
         LGBTQ_content,
@@ -215,6 +217,7 @@ exports.getSingleMovie = async (req, res) => {
         original_language,
         backdrop_path,
         videos,
+        external_ids,
         CRT,
         LGBTQ_content,
         trans_content,
@@ -249,6 +252,7 @@ exports.getSingleMovie = async (req, res) => {
           trailer: trailer,
           trailer2: trailer2,
           trailer3: trailer3,
+          IMDB: external_ids.imdb_id,
           reviews: { ...reviews },
           CRT,
           LGBTQ_content,

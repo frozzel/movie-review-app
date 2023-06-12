@@ -100,6 +100,7 @@ export default function SingleMovie() {
     trailer,
     trailer2,
     trailer3,
+    IMDB,
     reviews = {},
     genres = [],
   } = movie;
@@ -220,6 +221,8 @@ export default function SingleMovie() {
       </Container>
 
       <AddRatingModal
+        title={title}
+        IMDB={IMDB}
         visible={showRatingModal}
         onClose={hideRatingModal}
         onSuccess={handleOnRatingSuccess}

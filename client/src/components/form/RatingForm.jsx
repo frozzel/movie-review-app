@@ -8,7 +8,7 @@ const createArray = (count) => {
 
 const ratings = createArray(10);
 
-export default function RatingForm({ busy, initialState, onSubmit }) {
+export default function RatingForm({ busy, initialState, onSubmit, title, IMDB}) {
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [content, setContent] = useState("");
   const [CRT, setCRT] = useState(false);
@@ -18,8 +18,6 @@ export default function RatingForm({ busy, initialState, onSubmit }) {
   const [globalWarming, setGlobalWarming] = useState(false);
   const [leftWing, setLeftWing] = useState(false);
   
-
-
   const handleMouseEnter = (index) => {
     const ratings = new Array(index + 1).fill("");
     setSelectedRatings([...ratings]);
@@ -72,12 +70,13 @@ export default function RatingForm({ busy, initialState, onSubmit }) {
       anti_religion,
       globalWarming,
       leftWing,
-
+      title,
+      IMDB
     };
 
     onSubmit(data);
   };
-
+  
   useEffect(() => {
   if (initialState) {
     setContent(initialState.content);

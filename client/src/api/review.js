@@ -48,3 +48,24 @@ export const updateReview = async (reviewId, reviewData) => {
     return catchError(error);
   }
 };
+export const addReviewTv = async (movieId, reviewData, ) => {
+  const token = getToken();
+  try {
+    const { data } = await client.post(`/reviewTv/add/${movieId}`, reviewData, {
+      headers: {
+        authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
+export const getReviewByMovieTv = async (movieId) => {
+  try {
+    const { data } = await client(`/reviewTv/get-reviews-by-movie/${movieId}`);
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};

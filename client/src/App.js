@@ -14,6 +14,7 @@ import SingleMovie from "./components/user/SingleMovie";
 import SingleTv from "./components/user/SingleTv";
 import MovieReviews from "./components/user/MovieReviews";
 import SearchMovies from "./components/user/SearchMovies";
+import MovieReviewsTv from "./components/user/MovieReviewsTv";
 
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/movie/:movieId" element={<SingleMovie />} />
           <Route path="/tv/:movieId" element={<SingleTv />} />
           <Route path="/movie/reviews/:movieId" element={<MovieReviews />} />
+          <Route path="/movie/reviewstv/:movieId" element={<MovieReviewsTv />} />
           <Route path="/movie/search" element={<SearchMovies />} />
           <Route path='*' element={<NotFound/>} />
         

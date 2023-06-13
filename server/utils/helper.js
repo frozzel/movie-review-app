@@ -2,7 +2,8 @@ const crypto = require("crypto");
 const cloudinary = require("../cloud");
 const Review = require("../models/review");
 const Movie = require("../models/movie");
-const movie = require("../models/movie");
+const TV = require("../models/tv");
+const ReviewTv = require("../models/reviewtv");
 
 exports.sendError = (res, error, statusCode = 401) =>
   res.status(statusCode).json({ error });
@@ -65,6 +66,62 @@ exports.averageRatingPipeline = (movieId) => {
     },
     {
       $match: { parentMovie: movieId },
+    },
+    {
+      $group: {
+        _id: null,
+        ratingAvg: {
+          $avg: "$rating",
+        },
+        reviewCount: {
+          $sum: 1,
+        },
+        CRT: {
+          $sum: {
+            $cond: [{ $eq: ["$CRT", true] }, 1, 0],
+          },
+        },
+        LGBTQ_content: {
+          $sum: {
+            $cond: [{ $eq: ["$LGBTQ_content", true] }, 1, 0],
+          },
+        },
+        trans_content: {  
+          $sum: {
+            $cond: [{ $eq: ["$trans_content", true] }, 1, 0],
+          },
+        },
+        anti_religion: {
+          $sum: {
+            $cond: [{ $eq: ["$anti_religion", true] }, 1, 0],
+          },
+        },
+        globalWarming: {
+          $sum: {
+            $cond: [{ $eq: ["$globalWarming", true] }, 1, 0],
+          },
+        },
+        leftWing: {
+          $sum: {
+            $cond: [{ $eq: ["$leftWing", true] }, 1, 0],
+          },
+        },
+      },
+    },
+  ];
+};
+exports.averageRatingPipelineTv = (movieId) => {
+  return [
+    {
+      $lookup: {
+        from: "ReviewTv",
+        localField: "rating",
+        foreignField: "_id",
+        as: "avgRat",
+      },
+    },
+    {
+      $match: { parentTv: movieId },
     },
     {
       $group: {
@@ -205,6 +262,51 @@ exports.getAverageRatings = async (movieId) => {
   } else if (!movieReview) {
     const [aggregatedResponse] = await Review.aggregate(
       this.averageRatingPipeline(movieId)
+    );
+    const reviews = {};
+    // if(!aggregatedResponse)return null;
+    if (aggregatedResponse) {
+      const { ratingAvg, reviewCount, CRT, LGBTQ_content, trans_content, anti_religion, globalWarming, leftWing } = aggregatedResponse;
+      reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+      reviews.reviewCount = reviewCount;
+      reviews.CRT = CRT;
+      reviews.LGBTQ_content = LGBTQ_content;
+      reviews.trans_content = trans_content
+      reviews.anti_religion = anti_religion;
+      reviews.globalWarming = globalWarming;
+      reviews.leftWing = leftWing;
+      
+    }
+    return reviews;
+  }
+};
+exports.getAverageRatingsTv = async (movieId) => {
+  const movieReview = await TV.findOne({ TMDB_Id: movieId });
+  if (movieReview){
+
+  
+  const [aggregatedResponse] = await ReviewTv.aggregate(
+    this.averageRatingPipelineTv(movieReview._id)
+  );
+  const reviews = {};
+
+  if (aggregatedResponse) {
+    const { ratingAvg, reviewCount, CRT, LGBTQ_content, trans_content, anti_religion, globalWarming, leftWing } = aggregatedResponse;
+    reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+    reviews.reviewCount = reviewCount;
+    reviews.CRT = CRT;
+    reviews.LGBTQ_content = LGBTQ_content;
+    reviews.trans_content = trans_content;
+    reviews.anti_religion = anti_religion;
+    reviews.globalWarming = globalWarming;
+    reviews.leftWing = leftWing;
+
+  }
+
+  return reviews;
+  } else if (!movieReview) {
+    const [aggregatedResponse] = await ReviewTv.aggregate(
+      this.averageRatingPipelineTv(movieId)
     );
     const reviews = {};
     // if(!aggregatedResponse)return null;

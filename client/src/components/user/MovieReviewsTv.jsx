@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BsTrash, BsPencilSquare } from "react-icons/bs";
-import { deleteReview, getReviewByMovie } from "../../api/review";
+import { deleteReview, getReviewByMovieTv } from "../../api/review";
 import { useAuth, useNotification } from "../../hooks";
 import Container from "../Container";
 import CustomButtonLink from "../CustomButtonLink";
@@ -14,7 +14,7 @@ const getNameInitial = (name = "") => {
   return name[0].toUpperCase();
 };
 
-export default function MovieReviews() {
+export default function MovieReviewsTv() {
   const [reviews, setReviews] = useState([]);
   const [movieTitle, setMovieTitle] = useState("");
   const [profileOwnersReview, setProfileOwnersReview] = useState(null);
@@ -30,20 +30,20 @@ export default function MovieReviews() {
   const { updateNotification } = useNotification();
 
   const fetchReviews = async () => {
-    const { movie, error } = await getReviewByMovie(movieId);
+    const { movie, error } = await getReviewByMovieTv(movieId);
     if (error) return updateNotification("error", error);
-
     setReviews([...movie.reviews]);
     setMovieTitle(movie.title);
   };
 
   const findProfileOwnersReview = () => {
+    console.log("findProfileOwnersReview", profileOwnersReview);
     if (profileOwnersReview) return setProfileOwnersReview(null);
 
     const matched = reviews.find((review) => review.owner.id === profileId);
     if (!matched)
       return updateNotification("error", "You don't have any review!");
-    
+    console.log("matched", matched);
     setProfileOwnersReview(matched);
   };
 

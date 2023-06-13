@@ -1,8 +1,10 @@
 const fetch = require('node-fetch');
-const { sendError, getAverageRatings } = require('../utils/helper');
+const { sendError, getAverageRatings, getAverageRatingsTv} = require('../utils/helper');
 const Review = require("../models/review");
-const { averageRatingPipeline } = require("../utils/helper");
+const { averageRatingPipeline, averageRatingPipelineTv } = require("../utils/helper");
 const Movie = require("../models/movie");
+const TV = require("../models/tv");
+const ReviewTv = require("../models/reviewtv");
 
 
 
@@ -345,7 +347,7 @@ exports.getPopularTv = async (req, res) => {
     const response = await fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options)
     const movie = await response.json();
     const mapMovies = async (m) => {
-      const reviews = await getAverageRatings(m.id);
+      const reviews = await getAverageRatingsTv(m.id);
       return {
         id: m.id,
         title: m.name,
@@ -363,7 +365,7 @@ exports.getPopularTv = async (req, res) => {
 exports.getSingleTv = async (req, res) => {
   const {movieId} = req.params;
   
-  const url = 'https://api.themoviedb.org/3/tv/' +movieId+ '?language=en-US';
+  const url = 'https://api.themoviedb.org/3/tv/' +movieId+ '?language=en-US&append_to_response=videos,external_ids';
   
 
   const options = {
@@ -379,82 +381,155 @@ exports.getSingleTv = async (req, res) => {
     const movie = await response.json();
     
     
-    const movieReview = await Movie.findOne({ TMDB_Id: movieId });
-    if(movieReview) {
-      const [aggregatedResponse] = await Review.aggregate(
-        averageRatingPipeline(movieReview._id)
+    const movieReview = await TV.findOne({ TMDB_Id: movieId });
+    if(movieReview && movieReview.reviews.length > 0) {
+      const [aggregatedResponse] = await ReviewTv.aggregate(
+        averageRatingPipelineTv(movieReview._id)
       );
   
       const reviews = {};
-      if(!aggregatedResponse)return null;
+      // if(!aggregatedResponse)return null;
       if (aggregatedResponse) {
-        const { ratingAvg, reviewCount } = aggregatedResponse;
-        reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
-        reviews.reviewCount = reviewCount;
-      }
+        const { ratingAvg, reviewCount, CRT, LGBTQ_content, trans_content, anti_religion, globalWarming, leftWing} = aggregatedResponse;
+          reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+          reviews.reviewCount = reviewCount;
+          reviews.CRT = CRT;
+          reviews.LGBTQ_content = LGBTQ_content;
+          reviews.trans_content = trans_content;
+          reviews.anti_religion = anti_religion;
+          reviews.globalWarming = globalWarming;
+          reviews.leftWing = leftWing;
+          
+        } 
       
     
     const {
       id,
       title,
       overview,
-      release_date,
+      first_air_date,
       genres,
       original_language,
       backdrop_path,
+      videos,
+      external_ids,
+      CRT,
+      LGBTQ_content,
+      trans_content,
+      anti_religion,
+      globalWarming,
+      leftWing
       
       
     } = movie;
+
+    if (videos.results.length === 0) {
+      trailer = null
+      trailer2 = null
+      trailer3 = null
+    } else if (videos.results.length === 1) {
+      trailer= "https://www.youtube.com/embed/" + videos.results[0].key
+      trailer2 = null
+      trailer3 = null
+    } else {
+      trailer = "https://www.youtube.com/embed/" + videos.results[0].key
+      trailer2 = "https://www.youtube.com/embed/" + videos.results[1].key
+      trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+    }
 
     res.json({
       movie: {
         id,
         title,
         overview,
-        release_date,
+        releaseDate: first_air_date,
         genres: genres.map((g) => g.name),
         original_language,
         backdrop_path,
+        trailer: trailer,
+        trailer2: trailer2,
+        trailer3: trailer3,
         reviews: { ...reviews },
+        IMDB: external_ids.imdb_id,
+        CRT,
+        LGBTQ_content,
+        trans_content,
+        anti_religion,
+        globalWarming,
+        leftWing
+
       },
-    })} else if (!movieReview) {
-      const [aggregatedResponse] = await Review.aggregate(
-        averageRatingPipeline(movieId)
-      );
+    })} else if (!movieReview || movieReview.reviews.length === 0) {
+      // const [aggregatedResponse] = await tvReview.aggregate(
+      //   averageRatingPipeline(movieId)
+      // );
   
       const reviews = {};
       // if(!aggregatedResponse)return null;
-      if (aggregatedResponse) {
-        const { ratingAvg, reviewCount } = aggregatedResponse;
-        reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
-        reviews.reviewCount = reviewCount;
-      }
+      // if (aggregatedResponse) {
+      //   const { ratingAvg, reviewCount } = aggregatedResponse;
+      //   reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+      //   reviews.reviewCount = reviewCount;
+      // }
       
       const {
         id,
         title,
         overview,
-        release_date,
+        first_air_date,
         genres,
         original_language,
         backdrop_path,
+        videos,
+        external_ids,
+        CRT,
+        LGBTQ_content,
+        trans_content,
+        anti_religion,
+        globalWarming,
+        leftWing
         
         
       } = movie;
+
+      if (videos.results.length === 0) {
+        trailer = null
+        trailer2 = null
+        trailer3 = null
+      } else if (videos.results.length === 1) {
+        trailer= "https://www.youtube.com/embed/" + videos.results[0].key
+        trailer2 = null
+        trailer3 = null
+      } else {
+        trailer = "https://www.youtube.com/embed/" + videos.results[0].key
+        trailer2 = "https://www.youtube.com/embed/" + videos.results[1].key
+        trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+      }
   
       res.json({
         movie: {
           id,
           title,
           overview,
-          release_date,
+          releaseDate: first_air_date,
           genres: genres.map((g) => g.name),
           original_language,
           backdrop_path,
+          trailer: trailer,
+          trailer2: trailer2,
+          trailer3: trailer3,
+          IMDB: external_ids.imdb_id,
           reviews: { ...reviews },
+          CRT,
+          LGBTQ_content,
+          trans_content,
+          anti_religion,
+          globalWarming,
+          leftWing
         },
       });
     }
+    // res.json({movie})
     } catch (error) {
       console.log(error);
       return sendError(res, "Movie/TV id is not valid!"); 

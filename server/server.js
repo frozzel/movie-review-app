@@ -9,6 +9,8 @@ const userRouter = require('./routes/user');// import user router
 const actorRouter = require('./routes/actor');// import user router
 const movieRouter = require('./routes/movie');// import user router
 const reviewRouter = require("./routes/review"); // import review router
+const reviewTvRouter = require("./routes/reviewtv"); // import review router
+
 const adminRouter = require("./routes/admin"); // import admin router
 const movie1Router = require("./routes/movie1"); // import admin router
 
@@ -28,6 +30,8 @@ app.use('/api/actor', actorRouter);// use user router
 app.use('/api/movie', movieRouter);// use user router
 app.use('/api/movie1', movie1Router);// use user router
 app.use("/api/review", reviewRouter); // use review router
+app.use("/api/reviewTv", reviewTvRouter); // use review router
+
 
 app.use('/*', handleNotFound) // catch 404 and forward to error handler
 

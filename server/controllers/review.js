@@ -14,14 +14,14 @@ exports.addReview = async (req, res) => {
     anti_religion,
     globalWarming,
     leftWing, 
-    title, IMDB } = req.body;
+    title, IMDB, overview, release_date, backdrop_path, trailer, trailer2, trailer3, genres, original_language} = req.body;
   const userId = req.user._id;
   const movie = await Movie.findOne({ TMDB_Id: movieId });
 
   if (!req.user.isVerified) return sendError(res, "Please verify you email first!");
 
   if(!movie){
-    const newMovie = new Movie({TMDB_Id: movieId, title: title, IMDB: IMDB});
+    const newMovie = new Movie({TMDB_Id: movieId, title: title, IMDB: IMDB, overview: overview, release_date: release_date, backdrop_path: backdrop_path, trailer: trailer, trailer2: trailer2, trailer3: trailer3, genres: genres, original_language: original_language});
   
     await newMovie.save();
   } else if(movie) {
@@ -124,10 +124,6 @@ exports.getReviewsByMovie = async (req, res) => {
  
     const movieAPI = await response.json();
     const movieTitle = movieAPI.title;
-  
-
-
-    
 
   // if (!isValidObjectId(movieId)) return sendError(res, "Invalid movie ID!");
   

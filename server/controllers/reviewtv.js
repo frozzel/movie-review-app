@@ -16,7 +16,7 @@ exports.addReview = async (req, res) => {
     anti_religion,
     globalWarming,
     leftWing,
-    title, IMDB
+    title, IMDB, overview, release_date, backdrop_path, trailer, trailer2, trailer3, genres, original_language
     } = req.body;
   const userId = req.user._id;
   const movie = await TV.findOne({ TMDB_Id: movieId });
@@ -24,7 +24,7 @@ exports.addReview = async (req, res) => {
   if (!req.user.isVerified) return sendError(res, "Please verify you email first!");
 
   if(!movie){
-    const newMovie = new TV({TMDB_Id: movieId, title: title, IMDB: IMDB});
+    const newMovie = new TV({TMDB_Id: movieId, title: title, IMDB: IMDB, overview: overview, release_date: release_date, backdrop_path: backdrop_path, trailer: trailer, trailer2: trailer2, trailer3: trailer3, genres: genres, original_language: original_language});
   
     await newMovie.save();
   } else if(movie) {
@@ -72,7 +72,7 @@ exports.updateReview = async (req, res) => {
   
     if (!isValidObjectId(reviewId)) return sendError(res, "Invalid Review ID!");
   
-    const review = await Review.findOne({ owner: userId, _id: reviewId });
+    const review = await ReviewTv.findOne({ owner: userId, _id: reviewId });
     if (!review) return sendError(res, "Review not found!", 404);
   
     review.content = content;
@@ -95,14 +95,14 @@ exports.removeReview = async (req, res) => {
 
   if (!isValidObjectId(reviewId)) return sendError(res, "Invalid review ID!");
 
-  const review = await Review.findOne({ owner: userId, _id: reviewId });
+  const review = await ReviewTv.findOne({ owner: userId, _id: reviewId });
   if (!review) return sendError(res, "Invalid request, review not found!");
 
-  const movie = await Movie.findById(review.parentMovie).select("reviews");
+  const movie = await TV.findById(review.parentTv).select("reviews");
   
   movie.reviews = movie.reviews.filter((rId) => rId.toString() !== reviewId);
   
-  await Review.findByIdAndDelete(reviewId);
+  await ReviewTv.findByIdAndDelete(reviewId);
 
   await movie.save();
 
@@ -129,10 +129,6 @@ exports.getReviewsByMovie = async (req, res) => {
     
     const movieTitle = movieAPI.name;
   
-
-
-    
-
   // if (!isValidObjectId(movieId)) return sendError(res, "Invalid movie ID!");
   
   const movie = await TV.findOne({ TMDB_Id: movieId })

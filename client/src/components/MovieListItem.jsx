@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BsTrash, BsPencilSquare, BsBoxArrowUpRight } from "react-icons/bs";
 import { deleteMovie } from "../api/movie";
 import { useNotification } from "../hooks";
-import { getPoster } from "../utils/helper";
 import ConfirmModal from "./models/ConfirmModal";
 import UpdateMovie from "./models/UpdateMovie";
 
@@ -67,7 +66,10 @@ const MovieListItem = ({ movie, afterDelete, afterUpdate }) => {
 };
 
 const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
-  const { poster, title, responsivePosters, genres = [], status } = movie;
+  const {  title, backdrop_path, genres = [] } = movie;
+  
+  const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
+  
   return (
     <table className="w-full border-b">
       <tbody>
@@ -76,7 +78,7 @@ const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
             <div className="w-24">
               <img
                 className="w-full aspect-video"
-                src={getPoster(responsivePosters) || poster}
+                src={newScr}
                 alt={title}
               />
             </div>
@@ -103,7 +105,7 @@ const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
           </td>
 
           <td className="px-5">
-            <p className="text-primary dark:text-white">{status}</p>
+            <p className="text-primary dark:text-white"></p>
           </td>
 
           <td>

@@ -1,8 +1,9 @@
 import React from "react";
-import { AiFillStar } from "react-icons/ai";
+// import { FaRadiation } from "react-icons/fa";
 import { Link } from "react-router-dom";
 // import { getPoster } from "../../utils/helper";
 import GridContainer from "../GridContainer";
+import RatingStar from "../RatingStar";
 
 const trimTitle = (text = "") => {
   if (text.length <= 20) return text;
@@ -22,14 +23,14 @@ export default function TvList({ title, movies = [] }) {
       ) : null}
       <GridContainer>
         {movies.map((movie) => {
-          return <TvItem key={movie.id} movie={movie} />;
+          return <ListItem key={movie.id} movie={movie} />;
         })}
       </GridContainer>
     </div>
   );
 }
 
-const TvItem = ({ movie }) => {
+const ListItem = ({ movie }) => {
   const { id, title, backdrop_path, reviews , name} = movie;
   if (backdrop_path===null || backdrop_path===undefined){
     const  newScr = '/placeholder.png'
@@ -52,23 +53,12 @@ const TvItem = ({ movie }) => {
         >
           {trimTitle(name)}
         </h1>
-        {reviews?.ratingAvg ? (
-          <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
-            <span>{reviews?.ratingAvg}</span>
-            <AiFillStar />
-          </p>
-        ) : (
-          <p className="text-highlight dark:text-highlight-dark">No reviews</p>
-        )}
+        <RatingStar rating={reviews?.ratingAvg} />
+ 
       </Link>
     );
   } else  if (backdrop_path){
     const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
-  
-    
-  
-  // const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
-  
   return (
     <Link to={"/tv/" + id}>
       <img
@@ -88,14 +78,8 @@ const TvItem = ({ movie }) => {
       >
         {trimTitle(name)}
       </h1>
-      {reviews?.ratingAvg ? (
-        <p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
-          <span>{reviews?.ratingAvg}</span>
-          <AiFillStar />
-        </p>
-      ) : (
-        <p className="text-highlight dark:text-highlight-dark">No reviews</p>
-      )}
+      <RatingStar rating={reviews?.ratingAvg} />
+   
     </Link>
   );}
 };

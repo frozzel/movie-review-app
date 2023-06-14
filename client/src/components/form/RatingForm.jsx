@@ -8,7 +8,7 @@ const createArray = (count) => {
 
 const ratings = createArray(10);
 
-export default function RatingForm({ busy, initialState, onSubmit, title, IMDB}) {
+export default function RatingForm({ busy, initialState, onSubmit, title, IMDB, overview, release_date, backdrop_path, trailer, trailer2, trailer3, genres, original_language}) {
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [content, setContent] = useState("");
   const [CRT, setCRT] = useState(false);
@@ -71,7 +71,7 @@ export default function RatingForm({ busy, initialState, onSubmit, title, IMDB})
       globalWarming,
       leftWing,
       title,
-      IMDB
+      IMDB, overview, release_date, backdrop_path, trailer, trailer2, trailer3, genres, original_language
     };
 
     onSubmit(data);

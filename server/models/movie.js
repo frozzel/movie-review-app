@@ -7,16 +7,12 @@ const movieSchema = mongoose.Schema({
         trim: true,
         required: false
     },
-    storyLine: {
+    overview: {
         type: String,
         trim: true,
         required: false
     },
-    // director: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Actor',
-    // },
-    releaseDate: {
+    release_date: {
         type: Date,
         required: false
     },
@@ -33,40 +29,31 @@ const movieSchema = mongoose.Schema({
     genres: {
         type: [String],
         required: false,
-        enum: genres
+        // enum: genres
     },
-    tags: {
-        type: [String],
+    backdrop_path: {
+        type: String,
         required: false,
         
     },
-    // cast: [
-    //     {
-    //         actor: {type: mongoose.Schema.Types.ObjectId, ref: 'Actor'},
-    //         roleAs: String,
-    //         leadActor: Boolean,
-    //     }
-    // ],
-    // writers: [
-    //     {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: "Actor",
-    //     },
-    //   ],
-    // poster: {
-    //     type: Object,
-    //     url: { type: String, required: false },
-    //     public_id: { type: String, required: false },
-    //     required: false,
-    //   },
-    // trailer: {
-    //     type: Object,
-    //     url: { type: String, required: false },
-    //     public_id: { type: String, required: false },
-    //     required: false,
-    //   },
+        
+    trailer: {
+        type: String,
+        required: false,
+        
+    },    
+    trailer2: {
+        type: String,
+        required: false,
+        
+    },    
+    trailer3: {
+        type: String,
+        required: false,
+        
+    },
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
-    language: {
+    original_language: {
         type: String,
         required: false,
       },

@@ -13,7 +13,7 @@ export default function Home() {
       <Container className="px-2 xl:p-0">
         <NotVerified />
         {/* slider */}
-        <div className="dark:text-white text-primary text-lg">Coming Soon.....</div>
+        <div className="dark:text-white text-primary text-lg pt-2 ">Coming Soon.....</div>
         <HeroSlideshow />
         {/* Most rated movies */}
         <div className="space-y-3 py-8">

@@ -15,16 +15,16 @@ exports.validateMovie = [
     .isIn(["public", "private"])
     .withMessage("Movie status must be public or private!"),
   check("type").trim().not().isEmpty().withMessage("Movie type is missing!"),
-  check("genres")
-    .isArray()
-    .withMessage("Genres must be an array of strings!")
-    .custom((value) => {
-      for (let g of value) {
-        if (!genres.includes(g)) throw Error("Invalid genres!");
-      }
+  // check("genres")
+  //   .isArray()
+  //   .withMessage("Genres must be an array of strings!")
+  //   .custom((value) => {
+  //     for (let g of value) {
+  //       if (!genres.includes(g)) throw Error("Invalid genres!");
+  //     }
 
-      return true;
-    }),
+  //     return true;
+  //   }),
   check("tags")
     .isArray({ min: 1 })
     .withMessage("Tags must be an array of strings!")

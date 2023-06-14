@@ -314,10 +314,18 @@ exports.getMovies = async (req, res) => {
   const results = movies.map((movie) => ({
     id: movie._id,
     title: movie.title,
-    poster: movie.poster?.url,
-    responsivePosters: movie.poster?.responsive,
+    overview: movie.overview,
+    release_date: movie.release_date,
+    TMDB_Id: movie.TMDB_Id,
+    IMDB: movie.IMDB,
+    backdrop_path: movie.backdrop_path,
+    trailer: movie.trailer,
+    trailer2: movie.trailer2,
+    trailer3: movie.trailer3,
+    original_language: movie.original_language,
+    
     genres: movie.genres,
-    status: movie.status,
+    
   }));
 
   res.json({ movies: results });
@@ -380,18 +388,26 @@ exports.searchMovies = async (req, res) => {
 exports.getLatestUploads = async (req, res) => {
   const { limit = 5 } = req.query;
 
-  const results = await Movie.find({ status: "public" })
+  const results = await Movie.find()
     .sort("-createdAt")
     .limit(parseInt(limit));
-
+  console.log(results);
   const movies = results.map((m) => {
     return {
       id: m._id,
       title: m.title,
-      storyLine: m.storyLine,
-      poster: m.poster?.url,
-      responsivePosters: m.poster.responsive,
-      trailer: m.trailer?.url,
+      overview: m.overview,
+      release_date: m.release_date,
+      TMDB_Id: m.TMDB_Id,
+      IMDB: m.IMDB,
+      genres: m.genres,
+      backdrop_path: m.backdrop_path,
+      trailer: m.trailer,
+      trailer2: m.trailer2,
+      trailer3: m.trailer3,
+      original_language: m.original_language,
+
+      
     };
   });
   res.json({ movies });

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BsTrash, BsPencilSquare } from "react-icons/bs";
-import { deleteReview, getReviewByMovieTv } from "../../api/review";
+import { deleteReviewTv, getReviewByMovieTv } from "../../api/reviewtv";
 import { useAuth, useNotification } from "../../hooks";
 import Container from "../Container";
 import CustomButtonLink from "../CustomButtonLink";
 import RatingStar from "../RatingStar";
 import ConfirmModal from "../models/ConfirmModal";
 import NotFoundText from "../NotFoundText";
-import EditRatingModal from "../models/EditRatingModal";
+import EditRatingModalTv from "../models/EditRatingModalTv";
 
 const getNameInitial = (name = "") => {
   return name[0].toUpperCase();
@@ -37,13 +37,11 @@ export default function MovieReviewsTv() {
   };
 
   const findProfileOwnersReview = () => {
-    console.log("findProfileOwnersReview", profileOwnersReview);
     if (profileOwnersReview) return setProfileOwnersReview(null);
 
     const matched = reviews.find((review) => review.owner.id === profileId);
     if (!matched)
       return updateNotification("error", "You don't have any review!");
-    console.log("matched", matched);
     setProfileOwnersReview(matched);
   };
 
@@ -61,7 +59,7 @@ export default function MovieReviewsTv() {
   
   const handleDeleteConfirm = async () => {
     setBusy(true);
-    const { error, message } = await deleteReview(profileOwnersReview.id);
+    const { error, message } = await deleteReviewTv(profileOwnersReview.id);
     setBusy(false);
     if (error) return updateNotification("error", error);
 
@@ -106,9 +104,9 @@ export default function MovieReviewsTv() {
 
   return (
     <div className="dark:bg-primary bg-white  pb-10">
-      <Container className="xl:px-0 px-2 py-8">
+      <Container className="xl:px-0 px-2 py-8 ">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-semibold dark:text-white text-secondary">
+          <h1 className="text-2xl font-semibold dark:text-white text-secondary  md:text-xl lg:text-2xl sm:text-[10px]">
             <span className="text-light-subtle dark:text-dark-subtle font-normal">
               Reviews for: 
             </span>{" "}
@@ -155,7 +153,7 @@ export default function MovieReviewsTv() {
         subtitle="This action will remove this review permanently."
       />
 
-      <EditRatingModal
+      <EditRatingModalTv
         visible={showEditModal}
         initialState={selectedReview}
         onSuccess={handleOnReviewUpdate}

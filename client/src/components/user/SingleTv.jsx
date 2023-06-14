@@ -7,7 +7,7 @@ import CustomButtonLink from "../CustomButtonLink";
 import AddRatingModalTv from "../models/AddRatingModalTv";
 import RatingStar from "../RatingStar";
 import SimilarTv from "./SimilarTv";
-import MovieReviewsTv from "./MovieReviews";
+import MovieReviewsTv from "./MovieReviewsTv";
 import GaugeChart from 'react-gauge-chart';
 import { BsFillCheckSquareFill, BsSquare } from "react-icons/bs";
 import TMDB from "../TMDB";
@@ -104,7 +104,7 @@ export default function SingleTv() {
   if (reviews.ratingAvg > 1) imgCheck = true;
   
   return (
-    <div className="dark:bg-primary bg-white min-h-screen pb-10">
+    <div className="dark:bg-primary bg-white min-h-screen pb-10 pt-3">
       <Container className="xl:px-0 px-2">
         <div className="w-full flex">
         <div className="md:w-4/5 w-full aspect-video relative overflow-hidden">
@@ -217,6 +217,14 @@ export default function SingleTv() {
       <AddRatingModalTv
         title={title}
         IMDB={IMDB}
+        overview={overview}
+        release_date={releaseDate}
+        genres={genres}
+        backdrop_path={backdrop_path}
+        trailer={trailer}
+        trailer2={trailer2}
+        trailer3={trailer3}
+        original_language={original_language}
         visible={showRatingModal}
         onClose={hideRatingModal}
         onSuccess={handleOnRatingSuccess}

@@ -344,7 +344,7 @@ exports.getPopularTv = async (req, res) => {
       }
     };
   try{
-    const response = await fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options)
+    const response = await fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1&region=us', options)
     const movie = await response.json();
     const mapMovies = async (m) => {
       const reviews = await getAverageRatingsTv(m.id);
@@ -551,7 +551,7 @@ exports.searchTv = async (req, res) => {
     const tv = await response.json();
 
     const mapMovies = async (m) => {
-      const reviews = await getAverageRatings(m.id);
+      const reviews = await getAverageRatingsTv(m.id);
       return {
         id: m.id,
         title: m.name,

@@ -83,7 +83,7 @@ export default function SingleMovie() {
 
   if (!ready)
     return (
-      <div className="h-screen flex justify-center items-center dark:bg-primary bg-white">
+      <div className="h-screen flex justify-center items-center dark:bg-primary bg-white ">
         <p className="text-light-subtle dark:text-dark-subtle animate-pulse">
           Please wait
         </p>
@@ -110,7 +110,7 @@ export default function SingleMovie() {
   if (reviews.ratingAvg > 1) imgCheck = true;
   
   return (
-    <div className="dark:bg-primary bg-white min-h-screen pb-10">
+    <div className="dark:bg-primary bg-white min-h-screen pb-10 pt-3">
       <Container className="xl:px-0 px-2">
         <div className="w-full flex">
         <div className="md:w-4/5 w-full aspect-video relative overflow-hidden">
@@ -223,6 +223,14 @@ export default function SingleMovie() {
       <AddRatingModal
         title={title}
         IMDB={IMDB}
+        overview={overview}
+        release_date={release_date}
+        genres={genres}
+        backdrop_path={backdrop_path}
+        trailer={trailer}
+        trailer2={trailer2}
+        trailer3={trailer3}
+        original_language={original_language}
         visible={showRatingModal}
         onClose={hideRatingModal}
         onSuccess={handleOnRatingSuccess}

@@ -29,3 +29,17 @@ export const getMostRatedMovies = async () => {
       return catchError(error);
     }
   };
+  export const getMostRatedTv = async () => {
+    try {
+      const token = getToken();
+      const { data } = await client("/admin/most-rated-tv", {
+        headers: {
+          authorization: "Bearer " + token,
+        },
+      });
+  
+      return data;
+    } catch (error) {
+      return catchError(error);
+    }
+  };

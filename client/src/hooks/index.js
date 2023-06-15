@@ -4,9 +4,11 @@ import { NotificationContext } from "../context/NotificationProvider";
 import { AuthContext } from "../context/AuthProvider";
 import { SearchContext } from "../context/SearchProvider";
 import { MovieContext } from "../context/MoviesProvider";
+import { TvContext } from "../context/TvProvider";
 
 export const useTheme = () => useContext(ThemeContext)
 export const useNotification = () => useContext(NotificationContext)
 export const useAuth = () => useContext(AuthContext)
 export const useSearch = () => useContext(SearchContext);
 export const useMovies = () => useContext(MovieContext);
+export const useTv = () => useContext(TvContext);

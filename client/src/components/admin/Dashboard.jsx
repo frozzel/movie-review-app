@@ -3,12 +3,14 @@ import { getAppInfo } from "../../api/admin";
 import { useNotification } from "../../hooks";
 import AppInfoBox from "../AppInfoBox";
 import LatestUploads from "../LatestUploads";
+import LatestUploadsTv from "../LatestUploadsTv";
 import MostRatedMovies from "../MostRatedMovies";
+import MostRatedTv from "../MostRatedTv";
 
 export default function Dashboard() {
   const [appInfo, setAppInfo] = useState({
     movieCount: 0,
-    reviewCount: 0,
+    tvCount: 0,
     userCount: 0,
   });
 
@@ -29,12 +31,12 @@ export default function Dashboard() {
   return (
     <div className="grid grid-cols-3 gap-5 p-5">
       <AppInfoBox
-        title="Total Uploads"
+        title="Total Movie Uploads"
         subTitle={appInfo.movieCount.toLocaleString()}
       />
       <AppInfoBox
-        title="Total Reviews"
-        subTitle={appInfo.reviewCount.toLocaleString()}
+        title="Total TV Uploads"
+        subTitle={appInfo.tvCount.toLocaleString()}
       />
       <AppInfoBox
         title="Total Users"
@@ -42,7 +44,12 @@ export default function Dashboard() {
       />
 
       <LatestUploads />
+      
       <MostRatedMovies />
+      <LatestUploadsTv />
+      <MostRatedTv />
+
+
     </div>
   );
 }

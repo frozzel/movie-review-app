@@ -12,6 +12,8 @@ const {
   getRelatedMovies,
   getTopRatedMovies,
   searchPublicMovies,
+  getTv,
+  searchTv,
 } = require("../controllers/movie");
 const { isAuth, isAdmin, validate } = require("../utils/auth");
 const { uploadVideo, uploadImage } = require("../utils/multer");
@@ -61,9 +63,10 @@ router.patch(
 );
 router.delete("/:movieId", isAuth, isAdmin, removeMovie);
 router.get("/movies", isAuth, isAdmin, getMovies);
+router.get("/tv", isAuth, isAdmin, getTv);
 router.get("/for-update/:movieId", isAuth, isAdmin, getMovieForUpdate);
 router.get("/search", isAuth, isAdmin, searchMovies);
-
+router.get("/searchTv", isAuth, isAdmin, searchTv);
 // for normal users
 router.get("/latest-uploads", getLatestUploads);
 router.get("/single/:movieId", getSingleMovie);

@@ -156,6 +156,7 @@ exports.getSingleMovie = async (req, res) => {
       leftWing
       
     } = movie;
+    
     if (videos.results.length === 0) {
       trailer = null
       trailer2 = null
@@ -164,10 +165,16 @@ exports.getSingleMovie = async (req, res) => {
       trailer= "https://www.youtube.com/embed/" + videos.results[0].key
       trailer2 = null
       trailer3 = null
-    } else {
+    } else  {
       trailer = "https://www.youtube.com/embed/" + videos.results[0].key
       trailer2 = "https://www.youtube.com/embed/" + videos.results[1].key
-      trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+      if (!videos.results[2]) {
+        
+        trailer3 = null
+      } else {
+        
+        trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+      }
     }
     res.json({
       movie: {
@@ -229,6 +236,7 @@ exports.getSingleMovie = async (req, res) => {
         
         
       } = movie;
+      console.log(videos.results.length)
       if (videos.results.length === 0) {
         trailer = null
         trailer2 = null
@@ -237,10 +245,16 @@ exports.getSingleMovie = async (req, res) => {
         trailer= "https://www.youtube.com/embed/" + videos.results[0].key
         trailer2 = null
         trailer3 = null
-      } else {
+      } else  {
         trailer = "https://www.youtube.com/embed/" + videos.results[0].key
         trailer2 = "https://www.youtube.com/embed/" + videos.results[1].key
-        trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+        if (!videos.results[2]) {
+          
+          trailer3 = null
+        } else {
+          
+          trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+        }
       }
       res.json({
         movie: {
@@ -253,7 +267,7 @@ exports.getSingleMovie = async (req, res) => {
           backdrop_path,
           trailer: trailer,
           trailer2: trailer2,
-          trailer3: trailer3,
+          trailer3: trailer3? trailer3 : null,
           IMDB: external_ids.imdb_id,
           reviews: { ...reviews },
           CRT,
@@ -265,7 +279,8 @@ exports.getSingleMovie = async (req, res) => {
         },
       });
     }
-
+    // console.log(movie.videos.results.length)
+    // res.json({movie})
     } catch (error) {
       console.log(error);
       return sendError(res, "Movie/TV id is not valid!"); 
@@ -431,10 +446,16 @@ exports.getSingleTv = async (req, res) => {
       trailer= "https://www.youtube.com/embed/" + videos.results[0].key
       trailer2 = null
       trailer3 = null
-    } else {
+    } else  {
       trailer = "https://www.youtube.com/embed/" + videos.results[0].key
       trailer2 = "https://www.youtube.com/embed/" + videos.results[1].key
-      trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+      if (!videos.results[2]) {
+        
+        trailer3 = null
+      } else {
+        
+        trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+      }
     }
 
     res.json({
@@ -500,10 +521,16 @@ exports.getSingleTv = async (req, res) => {
         trailer= "https://www.youtube.com/embed/" + videos.results[0].key
         trailer2 = null
         trailer3 = null
-      } else {
+      } else  {
         trailer = "https://www.youtube.com/embed/" + videos.results[0].key
         trailer2 = "https://www.youtube.com/embed/" + videos.results[1].key
-        trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+        if (!videos.results[2]) {
+          
+          trailer3 = null
+        } else {
+          
+          trailer3 = "https://www.youtube.com/embed/" + videos.results[2].key
+        }
       }
   
       res.json({

@@ -405,7 +405,7 @@ exports.getSingleTv = async (req, res) => {
     
     const {
       id,
-      title,
+      name,
       overview,
       first_air_date,
       genres,
@@ -440,7 +440,7 @@ exports.getSingleTv = async (req, res) => {
     res.json({
       movie: {
         id,
-        title,
+        title: name,
         overview,
         releaseDate: first_air_date,
         genres: genres.map((g) => g.name),
@@ -474,7 +474,7 @@ exports.getSingleTv = async (req, res) => {
       
       const {
         id,
-        title,
+        name,
         overview,
         first_air_date,
         genres,
@@ -509,7 +509,7 @@ exports.getSingleTv = async (req, res) => {
       res.json({
         movie: {
           id,
-          title,
+          title: name,
           overview,
           releaseDate: first_air_date,
           genres: genres.map((g) => g.name),

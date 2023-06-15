@@ -66,7 +66,7 @@ const MovieListItem = ({ movie, afterDelete, afterUpdate }) => {
 };
 
 const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
-  const {  title, backdrop_path, genres = [] } = movie;
+  const {  name, title, backdrop_path, genres = [] } = movie;
   
   const newScr = "https://image.tmdb.org/t/p/original" + backdrop_path
   
@@ -88,6 +88,9 @@ const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
             <div>
               <h1 className="text-lg font-semibold text-primary dark:text-white">
                 {title}
+              </h1>
+              <h1 className="text-lg font-semibold text-primary dark:text-white">
+                {name}
               </h1>
               <div className="space-x-1">
                 {genres.map((g, index) => {

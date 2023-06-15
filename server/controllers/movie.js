@@ -10,6 +10,7 @@ const cloudinary = require("../cloud");
 const Movie = require("../models/movie");
 const Review = require("../models/review");
 const { isValidObjectId } = require("mongoose");
+const TV = require("../models/tv");
 
 exports.uploadTrailer = async (req, res) => {
   const { file } = req;
@@ -377,9 +378,28 @@ exports.searchMovies = async (req, res) => {
       return {
         id: m._id,
         title: m.title,
-        poster: m.poster?.url,
+        backdrop_path: m.backdrop_path,
         genres: m.genres,
-        status: m.status,
+        
+      };
+    }),
+  });
+};
+
+exports.searchTv = async (req, res) => {
+  const { title } = req.query;
+
+  if (!title.trim()) return sendError(res, "Invalid request!");
+
+  const movies = await TV.find({ title: { $regex: title, $options: "i" } });
+  res.json({
+    results: movies.map((m) => {
+      return {
+        id: m._id,
+        title: m.title,
+        backdrop_path: m.backdrop_path,
+        genres: m.genres,
+        
       };
     }),
   });
@@ -563,4 +583,31 @@ exports.searchPublicMovies = async (req, res) => {
   res.json({
     results,
   });
+};
+
+exports.getTv = async (req, res) => {
+  const { pageNo = 0, limit = 10 } = req.query;
+
+  const movies = await TV.find({})
+    .sort({ createdAt: -1 })
+    .skip(parseInt(pageNo) * parseInt(limit))
+    .limit(parseInt(limit));
+
+  const results = movies.map((movie) => ({
+    id: movie._id,
+    title: movie.title,
+    overview: movie.overview,
+    release_date: movie.release_date,
+    TMDB_Id: movie.TMDB_Id,
+    IMDB: movie.IMDB,
+    backdrop_path: movie.backdrop_path,
+    trailer: movie.trailer,
+    trailer2: movie.trailer2,
+    trailer3: movie.trailer3,
+    original_language: movie.original_language,
+    
+    genres: movie.genres,
+    
+  }));
+  res.json({ movies: results });
 };

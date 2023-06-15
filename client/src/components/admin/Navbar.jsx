@@ -2,6 +2,7 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AiOutlineHome } from "react-icons/ai";
 import { BiMoviePlay } from "react-icons/bi";
+import {BiCameraMovie} from "react-icons/bi";
 import { FaUserNinja } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useAuth } from "../../hooks";
@@ -29,6 +30,12 @@ export default function Navbar() {
           <NavItem to="/movies">
             <BiMoviePlay />
             <span>Movies</span>
+          </NavItem>
+        </li>
+        <li>
+          <NavItem to="/tv">
+            <BiCameraMovie />
+            <span>Tv Series</span>
           </NavItem>
         </li>
         <li>

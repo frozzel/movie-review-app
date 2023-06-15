@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { useMovies } from "../hooks";
+import { useTv } from "../hooks";
 import MovieListItem from "./MovieListItem";
 
 
 export default function LatestUploads() {
 
 
-  const { fetchLatestUploads, latestUploads } = useMovies();
+  const { fetchLatestUploads, latestUploads } = useTv();
 
 
   const handleUIUpdate = () => fetchLatestUploads();
@@ -19,7 +19,7 @@ export default function LatestUploads() {
     <>
       <div className="bg-white shadow dark:shadow-white dark:bg-secondary p-5 rounded col-span-2">
         <h1 className="font-semibold text-2xl mb-2 text-primary dark:text-white">
-          Recent Movie Uploads
+          Recent Tv Series Uploads
         </h1>
 
         <div className="space-y-3">

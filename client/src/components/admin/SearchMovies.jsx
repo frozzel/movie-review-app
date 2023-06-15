@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { searchMovieForAdmin } from "../../api/movie";
+import { searchMovieForAdmin, searchTvForAdmin } from "../../api/movie";
 import { useNotification } from "../../hooks";
 import MovieListItem from "../MovieListItem";
 import NotFoundText from "../NotFoundText";
 
 export default function SearchMovies() {
   const [movies, setMovies] = useState([]);
+  const [tv, setTv] = useState([]);
+
   const [resultNotFound, setResultNotFound] = useState(false);
+  const [resultNotFoundTv, setResultNotFoundTv] = useState(false);
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get("title");
@@ -25,6 +28,18 @@ export default function SearchMovies() {
 
     setResultNotFound(false);
     setMovies([...results]);
+  };
+  const searchTv = async (val) => {
+    const { error, results } = await searchTvForAdmin(val);
+    if (error) return updateNotification("error", error);
+
+    if (!results.length) {
+      setResultNotFoundTv(true);
+      return setTv([]);
+    }
+
+    setResultNotFoundTv(false);
+    setTv([...results]);
   };
 
   const handleAfterDelete = (movie) => {
@@ -44,8 +59,15 @@ export default function SearchMovies() {
     if (query.trim()) searchMovies(query);
   }, [query]);
 
-  return (
+  useEffect(() => {
+    if (query.trim()) searchTv(query);
+  }, [query]);
+  
+
+  return (<>
     <div className="p-5 space-y-3">
+    <h1 className="text-2xl dark:text-white text-secondary font-semibold mb-4">
+         Search Results for Movies.....</h1>
       <NotFoundText text="Record not found!" visible={resultNotFound} />
       {!resultNotFound &&
         movies.map((movie) => {
@@ -59,5 +81,22 @@ export default function SearchMovies() {
           );
         })}
     </div>
+    <div className="p-5 space-y-3">
+    <h1 className="text-2xl dark:text-white text-secondary font-semibold mb-4">
+         Search Results for Tv Series.....</h1>
+    <NotFoundText text="Record not found!" visible={resultNotFoundTv} />
+    {!resultNotFoundTv &&
+      tv.map((t) => {
+        return (
+          <MovieListItem
+            movie={t}
+            key={t.id}
+            afterDelete={handleAfterDelete}
+            afterUpdate={handleAfterUpdate}
+          />
+        );
+      })}
+  </div>
+  </>
   );
 }

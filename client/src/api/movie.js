@@ -107,6 +107,19 @@ export const searchMovieForAdmin = async (title) => {
     return catchError(error);
   }
 };
+export const searchTvForAdmin = async (title) => {
+  const token = getToken();
+  try {
+    const { data } = await client(`/movie/searchTv?title=${title}`, {
+      headers: {
+        authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
 
 export const getTopRatedMovies = async (type) => {
   try {
@@ -150,6 +163,23 @@ export const getRelatedMovies = async (id) => {
 export const searchPublicMovies = async (title) => {
   try {
     const { data } = await client("/movie/search-public?title=" + title);
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
+export const getTv = async (pageNo, limit) => {
+  const token = getToken();
+  try {
+    const { data } = await client(
+      `/movie/tv?pageNo=${pageNo}&limit=${limit}`,
+      {
+        headers: {
+          authorization: "Bearer " + token,
+          "content-type": "multipart/form-data",
+        },
+      }
+    );
     return data;
   } catch (error) {
     return catchError(error);

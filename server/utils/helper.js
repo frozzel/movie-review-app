@@ -199,7 +199,7 @@ exports.relatedMovieAggregation = (tags, movieId) => {
 exports.topRatedMoviesPipeline = (type) => {
   const matchOptions = {
     reviews: { $exists: true },
-    status: { $eq: "public" },
+    // status: { $eq: "public" },
   };
 
   if (type) matchOptions.type = { $eq: type };
@@ -208,6 +208,44 @@ exports.topRatedMoviesPipeline = (type) => {
     {
       $lookup: {
         from: "Movie",
+        localField: "reviews",
+        foreignField: "_id",
+        as: "topRated",
+      },
+    },
+    {
+      $match: matchOptions,
+    },
+    {
+      $project: {
+        title: 1,
+        poster: "$poster.url",
+        responsivePosters: "$poster.responsive",
+        reviewCount: { $size: "$reviews" },
+      },
+    },
+    {
+      $sort: {
+        reviewCount: -1,
+      },
+    },
+    {
+      $limit: 5,
+    },
+  ];
+};
+exports.topRatedTvPipeline = (type) => {
+  const matchOptions = {
+    reviews: { $exists: true },
+    // status: { $eq: "public" },
+  };
+
+  if (type) matchOptions.type = { $eq: type };
+
+  return [
+    {
+      $lookup: {
+        from: "TV",
         localField: "reviews",
         foreignField: "_id",
         as: "topRated",

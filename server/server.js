@@ -39,7 +39,7 @@ app.use('/*', handleNotFound) // catch 404 and forward to error handler
 app.use(errorHandler)// use error handler
 
 
-const PORT = process.env.PORT || 4000// define a port
+const PORT = process.env.PORT || 8000// define a port
 
 
 app.listen(PORT,  () => {// start express server on port 3000

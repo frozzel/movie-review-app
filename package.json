@@ -24,7 +24,7 @@
     "concurrently": "^8.0.1"
   }, 
   "engines": {
-    "node": "18.x",
+    "node": "18.15.0",
     "npm": "9.x"
   }
 }

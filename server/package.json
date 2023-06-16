@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "test",
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "startDev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -35,5 +36,9 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
+  }, 
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
   }
 }
